@@ -1,0 +1,15 @@
+<a class="flex" {...Astro.props} target="_blank" rel="noopener noreferrer">
+  <slot />
+</a>
+<style>
+  a {
+    padding: 2.5px;
+    transition: all 0.5s ease-in-out;
+    border-radius: 50%;
+    border: 2px solid transparent;
+  }
+
+  a:hover {
+    border-color: white;
+  }
+</style>

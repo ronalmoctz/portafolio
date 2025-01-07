@@ -1,0 +1,43 @@
+---
+import GithubIcon from "src/icons/GithubIcon.astro";
+import ButtonCV from "./ButtonCV.astro";
+import SocialLink from "./SocialLink.astro";
+import XIcon from "src/icons/XIcon.astro";
+import LinkedinIcon from "src/icons/LinkedinIcon.astro";
+---
+
+<section class="w-full lg:w-[740px] mx-auto py-36 text-center">
+  <div class="relative w-40 h-40 mx-auto mb-8 flex items-center justify-center">
+    <div
+      class="rounded-full absolute w-44 h-44 bg-gradient-to-tr from-blue-800 via-sky-700 to-indigo-800"
+    >
+    </div>
+    <img
+      src="../../public/profile-photo.webp"
+      alt="Ronaldo Moctezuma"
+      class="relative w-40 h-40 object-contain rounded-full"
+    />
+  </div>
+  <div class="opacity-90">
+    <h1 class="text-white text-pretty">
+      Hola soy, Ronaldo Moctezuma, Lic en Sistemas Computacionales <br />
+      apasionado por la programacion web, esencial en
+    </h1>
+    <h1 class="text-pretty mb-4">
+      <span class="italic font-light">frontend y backend,</span>
+      siempre buscando aprender y <br /> mejorar en cada proyecto que se me presente.
+    </h1>
+  </div>
+  <ButtonCV />
+  <nav class="flex mt-4 justify-center space-x-4">
+    <SocialLink href="https://github.com/ronalmoctz">
+      <GithubIcon />
+    </SocialLink>
+    <SocialLink href="https://x.com/ithou_">
+      <XIcon />
+    </SocialLink>
+    <SocialLink href="https://www.linkedin.com/in/ronaldo-moctezuma/">
+      <LinkedinIcon />
+    </SocialLink>
+  </nav>
+</section>

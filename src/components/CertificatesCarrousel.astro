@@ -1,0 +1,40 @@
+---
+import { certificateData } from "src/constants/certificates";
+---
+
+<section class="pt-36 mx-auto">
+  <h1
+    class="bg-gradient-to-bl from-violet-400 via-purple-600 to-fuchsia-700
+    text-7xl font-bold py-8 inline-block text-transparent bg-clip-text"
+  >
+    Certificados
+  </h1>
+
+  <div
+    class="flex overflow-x-scroll no-scrollbar gap-x-12 mt-8 custom-scrollbar"
+    id="carousel-container"
+  >
+    {
+      certificateData.map((certificates) => (
+        <article
+          class="mt-8 shrink-0 bg-gray-200 rounded-2xl
+          bg-opacity-90 w-[400px] h-[500px] "
+        >
+          <div class="pt-4 px-4 w-[400px] h-[350px] flex justify-center">
+            <img
+              src={certificates.image}
+              alt={certificates.title}
+              class="w-full h-full object-cover rounded-2xl shadow-[rgba(6,_24,_44,_0.4)_0px_0px_0px_2px,_rgba(6,_24,_44,_0.65)_0px_4px_6px_-1px,_rgba(255,_255,_255,_0.08)_0px_1px_0px_inset]"
+            />
+          </div>
+          <h1 class="pt-4 px-8 font-semibold text-base text-black">
+            {certificates.title}
+            <h2 class="pt-3 px-8 font-normal text-ms text-pretty text-black ">
+              {certificates.description}
+            </h2>
+          </h1>
+        </article>
+      ))
+    }
+  </div>
+</section>

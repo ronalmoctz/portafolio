@@ -1,0 +1,116 @@
+---
+import { project } from "src/constants/projects";
+import ShareIcon from "src/icons/ShareIcon.astro";
+import LeftArrow from "src/icons/LeftArrow.astro";
+import RightArrow from "src/icons/RightArrow.astro";
+---
+
+<section class="pt-36 mx-auto">
+  <h1
+    class="bg-gradient-to-bl from-sky-500 via-sky-600 to-blue-800
+    text-7xl font-bold py-8 inline-block text-transparent bg-clip-text"
+  >
+    Proyectos
+  </h1>
+
+  <div
+    class="flex overflow-x-scroll no-scrollbar gap-x-12 mt-8 carousel-container custom-scrollbar"
+    id="carousel-container"
+  >
+    {
+      project.map((project) => (
+        <article
+          class="shrink-0 bg-gray-700 rounded-2xl
+          bg-clip-padding backdrop-filter backdrop-blur-md
+          bg-opacity-20 border border-gray-100 w-[350px] h-[600px]"
+        >
+          <div class="pt-4 px-4 w-[350px] h-[420px] flex justify-center">
+            <img
+              src={project.image}
+              alt={project.title}
+              class="w-full h-full object-cover rounded-2xl shadow-[0px_4px_13px_1px_rgba(0,_0,_0,_0.1)]"
+            />
+          </div>
+          <h1 class="pt-4 px-4 font-semibold text-base">
+            {project.title}
+            <h2 class="pt-3 px-4 font-normal text-xs text-pretty">
+              {project.description}
+            </h2>
+          </h1>
+          <a
+            href="#"
+            class="flex items-center mt-3 absolute bottom-4 right-4 hover:underline group"
+          >
+            <ShareIcon class="transition-transform duration-200 ease-in-out transform group-hover:scale-105 opacity-80 group-hover:opacity-90" />
+          </a>
+        </article>
+      ))
+    }
+  </div>
+
+  <div class="hidden md:flex items-center gap-x-4 mt-8 justify-end">
+    <button
+      class="rounded-full border p-1 transition-all"
+      id="left-button"
+      aria-label="Ir al elemento anterior"
+    >
+      <LeftArrow />
+    </button>
+    <button
+      class="rounded-full border p-1 transition-all"
+      id="right-button"
+      aria-label="Ir al siguiente elemento"
+    >
+      <RightArrow />
+    </button>
+  </div>
+</section>
+
+<style>
+  .custom-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .custom-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .carousel-container {
+    overflow: hidden;
+    mask: linear-gradient(
+      90deg,
+      transparent,
+      white,
+      20%,
+      white 90%,
+      transparent
+    );
+  }
+</style>
+
+<script>
+  const carouselContainer = document.querySelector("#carousel-container");
+  const rightButton = document.querySelector("#right-button");
+  const leftButton = document.querySelector("#left-button");
+
+  const scrollAmount = 350; // Ajusta el valor para controlar el deslizamiento
+
+  rightButton.addEventListener("click", () => {
+    carouselContainer.scrollBy({ left: scrollAmount, behavior: "smooth" });
+  });
+
+  leftButton.addEventListener("click", () => {
+    carouselContainer.scrollBy({ left: -scrollAmount, behavior: "smooth" });
+  });
+
+  const updateButtonState = () => {
+    const { scrollLeft, scrollWidth, clientWidth } = carouselContainer;
+
+    leftButton.disabled = scrollLeft === 0;
+    rightButton.disabled = scrollLeft + clientWidth >= scrollWidth;
+  };
+
+  carouselContainer.addEventListener("scroll", updateButtonState);
+  window.addEventListener("load", updateButtonState);
+</script>
