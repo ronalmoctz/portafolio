@@ -4,9 +4,13 @@ import ButtonCV from "./ButtonCV.astro";
 import SocialLink from "./SocialLink.astro";
 import XIcon from "src/icons/XIcon.astro";
 import LinkedinIcon from "src/icons/LinkedinIcon.astro";
+import { fade } from "astro:transitions";
 ---
 
-<section class="w-full lg:w-[740px] mx-auto py-36 text-center">
+<section
+  transition:animate={fade({ duration: "0.4s" })}
+  class="w-full lg:w-[740px] mx-auto py-36 text-center"
+>
   <div class="relative w-40 h-40 mx-auto mb-8 flex items-center justify-center">
     <div
       class="rounded-full absolute w-44 h-44 bg-gradient-to-tr from-blue-800 via-sky-700 to-indigo-800"
@@ -18,7 +22,7 @@ import LinkedinIcon from "src/icons/LinkedinIcon.astro";
       class="relative w-40 h-40 object-contain rounded-full"
     />
   </div>
-  <div class="opacity-90">
+  <div class="text-gray-300">
     <h1 class="text-white text-pretty">
       Hola soy, Ronaldo Moctezuma, Lic en Sistemas Computacionales <br />
       apasionado por la programacion web, esencial en

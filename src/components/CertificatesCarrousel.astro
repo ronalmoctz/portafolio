@@ -17,8 +17,9 @@ import { certificateData } from "src/constants/certificates";
     {
       certificateData.map((certificates) => (
         <article
-          class="mt-8 shrink-0 bg-gray-200 rounded-2xl
-          bg-opacity-90 w-[400px] h-[500px] "
+          class="shrink-0 bg-gray-700 rounded-2xl
+          bg-clip-padding backdrop-filter backdrop-blur-md
+          bg-opacity-20 w-[400px] h-[520px]"
         >
           <div class="pt-4 px-4 w-[400px] h-[350px] flex justify-center">
             <img
@@ -27,14 +28,34 @@ import { certificateData } from "src/constants/certificates";
               class="w-full h-full object-cover rounded-2xl shadow-[rgba(6,_24,_44,_0.4)_0px_0px_0px_2px,_rgba(6,_24,_44,_0.65)_0px_4px_6px_-1px,_rgba(255,_255,_255,_0.08)_0px_1px_0px_inset]"
             />
           </div>
-          <h1 class="pt-4 px-8 font-semibold text-base text-black">
-            {certificates.title}
-            <h2 class="pt-3 px-8 font-normal text-ms text-pretty text-black ">
+          <div class="pt-4 px-8 text-gray-300">
+            <h1 class="font-semibold text-base">
+              {certificates.title} - {certificates.date}
+            </h1>
+            <p class="pt-3 font-normal text-sm text-pretty ">
               {certificates.description}
-            </h2>
-          </h1>
+            </p>
+            <div class="flex flex-wrap gap-2 mt-3">
+              {certificates.icons.map((icon) => (
+                <div class="inline-flex bg-gradient-to-br from-neutral-200 to-neutral-400  px-2 rounded-full">
+                  <img src={icon.src} alt="" class="w-14 h-8 p-1 " />
+                </div>
+              ))}
+            </div>
+          </div>
         </article>
       ))
     }
   </div>
 </section>
+
+<style>
+  .custom-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .custom-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+</style>
