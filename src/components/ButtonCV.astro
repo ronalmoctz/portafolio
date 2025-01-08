@@ -1,8 +1,14 @@
 ---
 import Download from "src/icons/Download.astro";
+import perosnalCV from "../../public/CV/CV_RONALDO_MOCTEZUMA.pdf";
 ---
 
-<button class="bg-gray-200 rounded-md italic text-slate-950 px-2 py-1">
+<a
+  href={perosnalCV}
+  target="_blank"
+  rel="noopener noreferrer"
+  class="bg-gray-200 rounded-md italic text-slate-950 px-2 py-1"
+>
   <Download class="w-6 h-6 inline-block" />
   <span>download CV</span>
-</button>
+</a>
