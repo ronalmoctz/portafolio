@@ -5,10 +5,10 @@ import LeftArrow from "src/icons/LeftArrow.astro";
 import RightArrow from "src/icons/RightArrow.astro";
 ---
 
-<section class="pt-36 mx-auto">
+<section class="pt-20 md:pt-36 mx-auto ml-8">
   <h1
-    class="bg-gradient-to-bl from-sky-500 via-sky-600 to-blue-800
-    text-7xl font-bold py-8 inline-block text-transparent bg-clip-text"
+    class="text-4xl bg-gradient-to-bl from-sky-500 via-sky-600 to-blue-800
+    md:text-7xl font-bold py-8 inline-block text-transparent bg-clip-text"
   >
     Proyectos
   </h1>
@@ -87,6 +87,12 @@ import RightArrow from "src/icons/RightArrow.astro";
       transparent
     );
   }
+
+  @media (max-width: 768px) {
+    .carousel-container {
+      mask: none;
+    }
+  }
 </style>
 
 <script>
@@ -94,7 +100,7 @@ import RightArrow from "src/icons/RightArrow.astro";
   const rightButton = document.querySelector("#right-button");
   const leftButton = document.querySelector("#left-button");
 
-  const scrollAmount = 350; // Ajusta el valor para controlar el deslizamiento
+  const scrollAmount = 350;
 
   rightButton.addEventListener("click", () => {
     carouselContainer.scrollBy({ left: scrollAmount, behavior: "smooth" });
@@ -111,6 +117,18 @@ import RightArrow from "src/icons/RightArrow.astro";
     rightButton.disabled = scrollLeft + clientWidth >= scrollWidth;
   };
 
+  const handleResize = () => {
+    if (window.innerWidth <= 768) {
+      carouselContainer.style.overflowX = "scroll";
+    } else {
+      carouselContainer.style.overflowX = "hidden";
+    }
+  };
+
   carouselContainer.addEventListener("scroll", updateButtonState);
-  window.addEventListener("load", updateButtonState);
+  window.addEventListener("load", () => {
+    updateButtonState();
+    handleResize();
+  });
+  window.addEventListener("resize", handleResize);
 </script>

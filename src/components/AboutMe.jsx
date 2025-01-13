@@ -10,19 +10,19 @@ function AboutMe() {
 
   return (
     <>
-      <section className="pt-36 mx-px-8 flex">
+      <section className="pt-36 px-4 flex flex-col md:flex-row">
         <h1
           className="bg-gradient-to-tr from-teal-900 via-emerald-600 to-green-400
-      text-7xl font-bold py-8 inline-block text-transparent bg-clip-text"
+          text-4xl md:text-7xl font-bold py-4 text-center md:text-left inline-block text-transparent bg-clip-text"
         >
           Mi Recorrido
         </h1>
 
-        <div className="pt-4 ml-28">
+        <div className="pt-6 md:pt-4 md:ml-28">
           {accordionData.map((item, index) => (
             <div key={index}>
               <button
-                className="flex items-center justify-between w-full py-5 font-medium text-gray-500 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400 gap-3"
+                className="flex items-center justify-between w-full py-4 font-medium text-gray-500 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400 gap-3"
                 onClick={() => toggleAccordion(index)}
               >
                 <h1>{item.title}</h1>
@@ -52,13 +52,16 @@ function AboutMe() {
                     : 'max-h-0 opacity-0'
                 }`}
               >
-                <div className="py-5 border-b border-gray-200 dark:border-gray-700">
+                <div className="py-4 border-b border-gray-200 dark:border-gray-700">
                   <p className="text-gray-500 dark:text-gray-400">
                     {item.content}
                   </p>
                   <div className="flex flex-wrap gap-2 mt-3">
-                    {item.label.map((label) => (
-                      <div className="inline-flex  border border-gray-400 px-2 rounded-full  text-gray-400">
+                    {item.label.map((label, labelIndex) => (
+                      <div
+                        key={labelIndex}
+                        className="inline-flex border border-gray-400 px-2 rounded-full text-gray-400"
+                      >
                         <span className="mr-2">{label}</span>
                         <svg
                           xmlns="http://www.w3.org/2000/svg"

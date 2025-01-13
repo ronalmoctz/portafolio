@@ -103,6 +103,21 @@ import JavaScriptIcon from "src/icons/JavaScriptIcon.astro";
     animation: scroll 32s linear infinite;
   }
 
+  @media (max-width: 768px) {
+    .tag-list li {
+      padding: 1rem;
+    }
+
+    .tag-list li svg {
+      width: 40px;
+      height: 40px;
+    }
+
+    .scroller__inner {
+      gap: 1rem;
+    }
+  }
+
   @keyframes scroll {
     to {
       transform: translate(calc(-50% - 0.5rem));

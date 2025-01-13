@@ -1,5 +1,6 @@
 ---
 import "@fontsource-variable/source-serif-4";
+import Preloader from "@components/Preloader.astro";
 import Header from "@components/Header.astro";
 import Footer from "@components/Footer.astro";
 import { ClientRouter } from "astro:transitions";
@@ -15,13 +16,8 @@ import { ClientRouter } from "astro:transitions";
     <title>Ronaldo Moctezuma</title>
     <ClientRouter />
   </head>
-  <body class="relative">
-    <div
-      id="preloader"
-      class="fixed inset-0 flex items-center justify-center bg-black z-50"
-    >
-      <h1 class="text-gray-400 text-7xl font-bold preloader-text">Moctezuma</h1>
-    </div>
+  <body>
+    <Preloader />
     <Header />
     <main class="flex flex-col gap-20 mf:gap-24">
       <slot />
@@ -53,39 +49,8 @@ import { ClientRouter } from "astro:transitions";
     }
   }
 
-  #preloader {
-    transition: opacity 300s ease;
-  }
-
-  .preloader-text {
-    background: linear-gradient(
-      to bottom,
-      white 30%,
-      gray 50%,
-      white 70%,
-      gray 90%
-    );
-    background-clip: text;
-    -webkit-background-clip: text;
-    color: transparent;
-    animation: fill 4s ease-in-out infinite;
-    background-size: 100% 300%;
-  }
-
-  @keyframes fill {
-    0% {
-      background-position: 0% 100%;
-    }
-    50% {
-      background-position: 0% 0%;
-    }
-    100% {
-      background-position: 0% 100%;
-    }
-  }
-
   body::-webkit-scrollbar {
-    width: 10px;
+    width: 8px;
     height: 5px;
   }
 
@@ -103,13 +68,3 @@ import { ClientRouter } from "astro:transitions";
     background-color: #1c1b1b;
   }
 </style>
-
-<script>
-  window.addEventListener("load", () => {
-    const preloader = document.getElementById("preloader");
-    preloader.style.opacity = "0";
-    setTimeout(() => {
-      preloader.style.display = "none";
-    }, 500);
-  });
-</script>

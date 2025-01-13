@@ -4,13 +4,9 @@ import ButtonCV from "./ButtonCV.astro";
 import SocialLink from "./SocialLink.astro";
 import XIcon from "src/icons/XIcon.astro";
 import LinkedinIcon from "src/icons/LinkedinIcon.astro";
-import { fade } from "astro:transitions";
 ---
 
-<section
-  transition:animate={fade({ duration: "0.4s" })}
-  class="w-full lg:w-[740px] mx-auto py-36 text-center"
->
+<section class="lg:w-[740px] mx-auto mt-20 md:mt-36 md:mb-16 text-center">
   <div class="relative w-40 h-40 mx-auto mb-8 flex items-center justify-center">
     <div
       class="rounded-full absolute w-44 h-44 bg-gradient-to-tr from-blue-800 via-sky-700 to-indigo-800"
@@ -22,12 +18,12 @@ import { fade } from "astro:transitions";
       class="relative w-40 h-40 object-contain rounded-full"
     />
   </div>
-  <div class="text-gray-300">
-    <h1 class="text-white text-pretty">
-      Hola 👋 soy, Ronaldo Moctezuma, Lic en Sistemas Computacionales 💻 <br />
+  <div class="text-gray-300 text-sm md:text-pretty md:text-base">
+    <h1 class="text-white">
+      Hola 👋 soy, Ronaldo Moctezuma, Lic en Sistemas Computacionales<br />
       apasionado por la programacion web, esencial en
     </h1>
-    <h1 class="text-pretty mb-4">
+    <h1 class="mb-4">
       <span class="italic font-light">frontend y backend,</span>
       siempre buscando 🔎 aprender y <br /> mejorar en cada proyecto que se me presente
       ☝️.
@@ -46,3 +42,16 @@ import { fade } from "astro:transitions";
     </SocialLink>
   </nav>
 </section>
+
+<style>
+  @media (max-width: 768px) {
+    section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    nav {
+      justify-content: center;
+    }
+  }
+</style>
