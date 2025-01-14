@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { accordionData } from 'src/constants/accordeon';
 
 function AboutMe() {
-  const [activeIndex, setActiveIndex] = useState(null);
+  const [activeIndex, setActiveIndex] = useState(0);
 
   const toggleAccordion = (index) => {
     setActiveIndex(activeIndex === index ? null : index);
@@ -10,9 +10,9 @@ function AboutMe() {
 
   return (
     <>
-      <section className="pt-36 px-4 flex flex-col md:flex-row">
+      <section className="relative pt-20 md:pt-36 px-4 flex flex-col md:flex-row">
         <h1
-          className="bg-gradient-to-tr from-teal-900 via-emerald-600 to-green-400
+          className="relative z-10 bg-gradient-to-tr from-teal-900 via-emerald-600 to-green-400
           text-4xl md:text-7xl font-bold py-4 text-center md:text-left inline-block text-transparent bg-clip-text"
         >
           Mi Recorrido

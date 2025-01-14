@@ -16,8 +16,12 @@ import { ClientRouter } from "astro:transitions";
     <title>Ronaldo Moctezuma</title>
     <ClientRouter />
   </head>
-  <body>
+  <body
+    class="min-h-screen [background:radial-gradient(125%_125%_at_50%_10%,#000_40%,#63e_100%)]"
+  >
     <Preloader />
+    <div class="absolute inset-0 -z-10 h-full w-full items-center px-5 py-24">
+    </div>
     <Header />
     <main class="flex flex-col gap-20 mf:gap-24">
       <slot />

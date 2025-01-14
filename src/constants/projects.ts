@@ -1,19 +1,21 @@
 export const project = [
   {
-    title: "Project 1",
-    image: "../../public/47265670_p0.jpg",
+    title: "UPFIM SICD",
+    image: "../../public/upfim-web.png",
     description:
       "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quae laboreconsequatur blanditiis. Facere, impedit. Sequi odio vero sit perferendis consequuntur provident.",
     tags: ["Rect", "Typescript"],
     icon: "../icons/CheckIcon.astro",
+    link: "https://github.com/ronalmoctz/UPFIM-DEV.2",
   },
   {
-    title: "Project 2",
-    image: "../../public/47265670_p0.jpg",
+    title: "Modelo DB (MySQL)",
+    image: "../../public/db-chart.png",
     description:
       "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quae laboreconsequatur blanditiis. Facere, impedit. Sequi odio vero sit perferendis consequuntur provident.",
     tags: ["Astro", "TailWind"],
     icon: "../icons/CheckIcon.astro",
+    link: "",
   },
   {
     title: "Project 3",
@@ -22,6 +24,7 @@ export const project = [
       "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quae laboreconsequatur blanditiis. Facere, impedit. Sequi odio vero sit perferendis consequuntur provident.",
     tags: ["Angular", "MySQL"],
     icon: "../icons/CheckIcon.astro",
+    link: "",
   },
   {
     title: "Project 4",
@@ -30,6 +33,7 @@ export const project = [
       "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quae laboreconsequatur blanditiis. Facere, impedit. Sequi odio vero sit perferendis consequuntur provident.",
     tags: ["Vue", "Firebase"],
     icon: "../icons/CheckIcon.astro",
+    link: "",
   },
   {
     title: "Project 5",
@@ -38,13 +42,6 @@ export const project = [
       "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quae laboreconsequatur blanditiis. Facere, impedit. Sequi odio vero sit perferendis consequuntur provident.",
     tags: ["Svelte", "GraphQL"],
     icon: "../icons/CheckIcon.astro",
-  },
-  {
-    title: "Project 6",
-    image: "../../public/47265670_p0.jpg",
-    description:
-      "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quae laboreconsequatur blanditiis. Facere, impedit. Sequi odio vero sit perferendis consequuntur provident.",
-    tags: ["React Native", "Expo"],
-    icon: "../icons/CheckIcon.astro",
+    link: "",
   },
 ];
