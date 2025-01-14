@@ -3,7 +3,7 @@ export const project = [
     title: "UPFIM SICD",
     image: "../../public/upfim-web.png",
     description:
-      "Proyecto universitario, destaca el uso de React, custom componenten, JWT, Cookies de sesion, Axios, Tailwind, Material UI, CSS, NodeJS, NPM, Swagger y Playwright para relizar algunos test basicos ",
+      "Proyecto universitario, destaca el uso de React, custom componenten, JWT, Cookies de sesion, Axios, Tailwind, Material UI, CSS, NodeJS, NPM, Swagger y Playwright para relizar algunos test basicos.",
     tags: ["Rect", "Typescript"],
     icon: "../icons/CheckIcon.astro",
     link: "https://github.com/ronalmoctz/UPFIM-DEV.2",
@@ -19,27 +19,45 @@ export const project = [
   },
   {
     title: "Maqueta para Hackaton",
-    image: "../../public/47265670_p0.jpg",
+    image: "../../public/Hacktaon-img.png",
     description:
-      "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quae laboreconsequatur blanditiis. Facere, impedit. Sequi odio vero sit perferendis consequuntur provident.",
+      "Maquetado de aplicacion para automatizar el transporte publico en el Estado de Hidalgo, wireframes accesibles, minimalistas y una UI intuitiva.",
     tags: ["Angular", "MySQL"],
     icon: "../icons/CheckIcon.astro",
-    link: "",
+    link: "https://www.figma.com/design/DsM3yqFBGh6PpBLLwgBCGx/Hackaton-UI%2FUX?node-id=0-1",
   },
   {
-    title: "Project 4",
-    image: "../../public/47265670_p0.jpg",
+    title: "Coleccion Cisco",
+    image: "../../public/cisco-simulation.png",
     description:
-      "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quae laboreconsequatur blanditiis. Facere, impedit. Sequi odio vero sit perferendis consequuntur provident.",
+      "Repositorio con una coleccion de proyectos en Cisco Packet Tracer y algunos Script de atomatizacion.",
     tags: ["Vue", "Firebase"],
+    icon: "../icons/CheckIcon.astro",
+    link: "https://github.com/ronalmoctz/IoT-Practica",
+  },
+  {
+    title: "Practica Angular",
+    image: "../../public/Angular-img.png",
+    description:
+      "Proyecto de practica usando Angular 19, y para le backend Express, y sesiones con JWT y OAuth aun en desarollo.",
+    tags: ["Svelte", "GraphQL"],
     icon: "../icons/CheckIcon.astro",
     link: "",
   },
   {
-    title: "Project 5",
-    image: "../../public/47265670_p0.jpg",
+    title: "MVC .NET",
+    image: "../../public/net-image.png",
     description:
-      "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quae laboreconsequatur blanditiis. Facere, impedit. Sequi odio vero sit perferendis consequuntur provident.",
+      "Desarollo de un bakecn sencillo usando .NET Core y la arquitecutra MVC, aplicando tecnologias como Scalar y OpenAPI, asi como el uso de SQLserver y Entity.",
+    tags: ["Svelte", "GraphQL"],
+    icon: "../icons/CheckIcon.astro",
+    link: "",
+  },
+  {
+    title: "Tienda Comics Strapi",
+    image: "../../public/strapi-next-image.png",
+    description:
+      "Proyecto sencillo para aplicar estrapi CMS como backend y gestos mas amigable para proyectos rapidos y esclabales, y de front usando NextJS y su biblioteca de UI.",
     tags: ["Svelte", "GraphQL"],
     icon: "../icons/CheckIcon.astro",
     link: "",
