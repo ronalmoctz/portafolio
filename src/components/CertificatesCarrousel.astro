@@ -10,52 +10,113 @@ import { certificateData } from "src/constants/certificates";
     Certificados
   </h1>
 
-  <div
-    class="flex overflow-x-scroll no-scrollbar gap-x-12 mt-8 custom-scrollbar"
-    id="carousel-container"
-  >
-    {
-      certificateData.map((certificates) => (
-        <article
-          class="shrink-0 bg-gray-800 rounded-2xl
-          bg-clip-padding backdrop-filter backdrop-blur-md
-          bg-opacity-80 w-[400px] h-[520px]"
-        >
-          <div class="pt-4 px-4 w-[400px] h-[350px] flex justify-center">
-            <img
-              src={certificates.image}
-              alt={certificates.title}
-              class="w-full h-full object-cover rounded-2xl shadow-[rgba(6,_24,_44,_0.4)_0px_0px_0px_2px,_rgba(6,_24,_44,_0.65)_0px_4px_6px_-1px,_rgba(255,_255,_255,_0.08)_0px_1px_0px_inset]"
-            />
-          </div>
-          <div class="pt-4 px-8 text-gray-300">
-            <h1 class="font-semibold text-base">
-              {certificates.title} - {certificates.date}
-            </h1>
-            <p class="pt-3 font-normal text-sm text-pretty ">
-              {certificates.description}
-            </p>
-            <div class="flex flex-wrap gap-2 mt-3">
-              {certificates.icons.map((icon) => (
-                <div class="inline-flex bg-gradient-to-br from-neutral-200 to-neutral-400  px-2 rounded-full">
-                  <img src={icon.src} alt="" class="w-14 h-8 p-1 " />
-                </div>
-              ))}
+  <div class="carousel-wrapper overflow-hidden">
+    <div class="carousel-container flex gap-x-12" id="carousel-container">
+      {
+        // Duplicar los elementos para lograr el efecto infinito
+        [...certificateData, ...certificateData].map((certificates, index) => (
+          <article
+            key={index}
+            class="carousel-item shrink-0 bg-gray-800 rounded-2xl
+            bg-clip-padding backdrop-filter backdrop-blur-md
+            bg-opacity-80 w-[400px] h-[520px]"
+          >
+            <div class="pt-4 px-4 w-[400px] h-[350px] flex justify-center">
+              <img
+                src={certificates.image}
+                alt={certificates.title}
+                class="w-full h-full object-cover rounded-2xl shadow-[rgba(6,_24,_44,_0.4)_0px_0px_0px_2px,_rgba(6,_24,_44,_0.65)_0px_4px_6px_-1px,_rgba(255,_255,_255,_0.08)_0px_1px_0px_inset]"
+              />
             </div>
-          </div>
-        </article>
-      ))
-    }
+            <div class="pt-4 px-8 text-gray-300">
+              <h1 class="font-semibold text-base">
+                {certificates.title} - {certificates.date}
+              </h1>
+              <p class="pt-3 font-normal text-sm text-pretty">
+                {certificates.description}
+              </p>
+              <div class="flex flex-wrap gap-2 mt-3">
+                {certificates.icons.map((icon, iconIndex) => (
+                  <div
+                    key={iconIndex}
+                    class="inline-flex bg-gradient-to-br from-neutral-200 to-neutral-400 px-2 rounded-full"
+                  >
+                    <img src={icon.src} alt="" class="w-14 h-8 p-1" />
+                  </div>
+                ))}
+              </div>
+            </div>
+          </article>
+        ))
+      }
+    </div>
   </div>
 </section>
 
 <style>
-  .custom-scrollbar::-webkit-scrollbar {
+  @media (min-width: 1024px) {
+    .carousel-wrapper {
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+    }
+
+    .carousel-container {
+      display: flex;
+      animation: scroll 20s linear infinite;
+    }
+
+    .carousel-item {
+      flex: 0 0 auto;
+    }
+
+    /* Animación infinita */
+    @keyframes scroll {
+      0% {
+        transform: translateX(0);
+      }
+      100% {
+        transform: translateX(-50%);
+      }
+    }
+
+    /* Pausar la animación al interactuar */
+    .carousel-item:hover {
+      animation-play-state: paused !important;
+    }
+  }
+
+  /* Ocultar scrollbars */
+  .no-scrollbar::-webkit-scrollbar {
     display: none;
   }
 
-  .custom-scrollbar {
+  .no-scrollbar {
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
+  @media (max-width: 1023px) {
+    .carousel-container {
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+    }
+
+    .carousel-item {
+      scroll-snap-align: start; /* Alinea las tarjetas al scroll */
+    }
+  }
 </style>
+
+<script>
+  const container = document.getElementById("carousel-container");
+  const items = document.querySelectorAll(".carousel-item");
+
+  items.forEach((item) => {
+    item.addEventListener("mouseenter", () => {
+      container.style.animationPlayState = "paused";
+    });
+    item.addEventListener("mouseleave", () => {
+      container.style.animationPlayState = "running";
+    });
+  });
+</script>

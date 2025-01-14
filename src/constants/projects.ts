@@ -3,7 +3,7 @@ export const project = [
     title: "UPFIM SICD",
     image: "../../public/upfim-web.png",
     description:
-      "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quae laboreconsequatur blanditiis. Facere, impedit. Sequi odio vero sit perferendis consequuntur provident.",
+      "Proyecto universitario, destaca el uso de React, custom componenten, JWT, Cookies de sesion, Axios, Tailwind, Material UI, CSS, NodeJS, NPM, Swagger y Playwright para relizar algunos test basicos ",
     tags: ["Rect", "Typescript"],
     icon: "../icons/CheckIcon.astro",
     link: "https://github.com/ronalmoctz/UPFIM-DEV.2",
@@ -12,13 +12,13 @@ export const project = [
     title: "Modelo DB (MySQL)",
     image: "../../public/db-chart.png",
     description:
-      "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quae laboreconsequatur blanditiis. Facere, impedit. Sequi odio vero sit perferendis consequuntur provident.",
+      "Documentacion escencial para la creacion de nuestra DB para el proyecto de SICD, usando diagrama E-R y logica de funcionamiento y normalizacion de tablas.",
     tags: ["Astro", "TailWind"],
     icon: "../icons/CheckIcon.astro",
     link: "",
   },
   {
-    title: "Project 3",
+    title: "Maqueta para Hackaton",
     image: "../../public/47265670_p0.jpg",
     description:
       "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quae laboreconsequatur blanditiis. Facere, impedit. Sequi odio vero sit perferendis consequuntur provident.",
