@@ -4,7 +4,7 @@ import NdgLogo from "../assets/ndg_logo_p.webp";
 export const certificateData = [
   {
     title: "IoT Fundamentals",
-    image: "../../public/cisco-iot.png",
+    image: "/cisco-iot.png",
     date: new Date(2023, 8, 9).toLocaleDateString(),
     description:
       "Utilizar sensores de IdC, creación de diagramas Business Canvas, describir el rol de red y computación en la niebla.",
@@ -12,7 +12,7 @@ export const certificateData = [
   },
   {
     title: "Linux Essentials",
-    image: "../../public/linux-cisco.png",
+    image: "/linux-cisco.png",
     date: new Date(2023, 12, 31).toLocaleDateString(),
     description:
       "Fundamentos de Linux, comandos básicos, administración de usuarios y permisos, y gestión de archivos.",
@@ -20,7 +20,7 @@ export const certificateData = [
   },
   {
     title: "Redes Empresariales",
-    image: "../../public/ccna-empresarial.png",
+    image: "/ccna-empresarial.png",
     date: new Date(2023, 7, 29).toLocaleDateString(),
     description:
       "Conceptos avanzados de redes empresariales, configuración de routers y switches, y resolución de problemas de red.",
@@ -28,7 +28,7 @@ export const certificateData = [
   },
   {
     title: "Python Essentials",
-    image: "../../public/python-cisco.png",
+    image: "/python-cisco.png",
     date: new Date(2023, 12, 15).toLocaleDateString(),
     description:
       "Fundamentos de Python, sintaxis básica, estructuras de datos y principios de programación.",
@@ -36,7 +36,7 @@ export const certificateData = [
   },
   {
     title: "Cyber Security Introduction",
-    image: "../../public/secusity-cisco.png",
+    image: "/secusity-cisco.png",
     date: new Date(2024, 9, 19).toLocaleDateString(),
     description:
       "Principios básicos de ciberseguridad, identificación de amenazas, y medidas de protección.",
@@ -44,7 +44,7 @@ export const certificateData = [
   },
   {
     title: "Introduction to Networking",
-    image: "../../public/intro-ccna.png",
+    image: "/intro-ccna.png",
     date: new Date(2022, 9, 31).toLocaleDateString(),
     description:
       "Conceptos fundamentales de redes, topologías de red,  protocolos de comunicación mode OSI y VLANs.",
