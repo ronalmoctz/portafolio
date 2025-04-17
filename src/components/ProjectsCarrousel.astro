@@ -18,64 +18,47 @@ import RightArrow from "src/icons/RightArrow.astro";
     id="carousel"
   >
     {
-      project.map(async (project) => {
-        const icons = Array.isArray(project.tecs)
-          ? await Promise.all(
-              project.tecs.map(async (iconPath) => {
-                const { default: IconComponent } = await import(iconPath);
-                return IconComponent;
-              })
-            )
-          : [];
+      project.map((project) => (
+        <a
+          href={project.link}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="group shrink-0 bg-gray-700 rounded-2xl
+          bg-clip-padding backdrop-filter backdrop-blur-md
+           bg-opacity-20 w-[750px] h-[600px] text-gray-300 relative transition-transform hover:scale-[1.01]"
+          aria-label={`Ir al proyecto ${project.title}`}
+        >
+          <article class="w-full h-full flex flex-col">
+            <div class="pt-4 px-4 w-full h-[450px] flex justify-center">
+              <img
+                src={project.image}
+                alt={project.title}
+                aria-label="img-projects"
+                class="w-full h-full object-cover rounded-2xl shadow-[0px_4px_13px_1px_rgba(0,_0,_0,_0.1)]"
+              />
+            </div>
 
-        return (
-          <a
-            href={project.link}
-            target="_blank"
-            rel="noopener noreferrer"
-            class="group shrink-0 bg-gray-700 rounded-2xl
-            bg-clip-padding backdrop-filter backdrop-blur-md
-             bg-opacity-20 w-[750px] h-[610px] text-gray-300 relative transition-transform hover:scale-[1.01]"
-            aria-label={`Ir al proyecto ${project.title}`}
-          >
-            <article class="w-full h-full flex flex-col">
-              <div class="pt-4 px-4 w-full h-[450px] flex justify-center">
-                <img
-                  src={project.image}
-                  alt={project.title}
-                  aria-label="img-projects"
-                  class="w-full h-full object-cover rounded-2xl shadow-[0px_4px_13px_1px_rgba(0,_0,_0,_0.1)]"
-                />
-              </div>
+            <div class="px-4 pb-4 pt-2 relative flex flex-col gap-3">
+              <h1 class="font-semibold text-base">{project.title}</h1>
+              <h2 class="font-normal text-sm text-pretty">
+                {project.description}
+              </h2>
 
-              <div class="px-4 pb-4 pt-2 relative flex flex-col gap-3">
-                <h1 class="font-semibold text-base">{project.title}</h1>
-                <h2 class="font-normal text-sm text-pretty">
-                  {project.description}
-                </h2>
+              {project.tags && project.tags.length > 0 && (
+                <div class="flex gap-2 mt-2 flex-wrap items-center">
+                  {project.tags.map((tag) => (
+                    <span class="px-3 py-1 rounded-full border border-neutral-700 bg-neutral-800/60 text-xs font-semibold text-white shadow-sm transition-all select-none">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              )}
 
-                {icons.length > 0 && (
-                  <div class="flex gap-2 mt-2 flex-wrap items-center">
-                    {icons.map((Icon, idx) => (
-                      <div
-                        class="w-8 h-8 p-1  flex items-center justify-center "
-                        title={project.tecs[idx]
-                          .split("/")
-                          .pop()
-                          ?.replace(".astro", "")}
-                      >
-                        <Icon class="w-5 h-5 text-white" />
-                      </div>
-                    ))}
-                  </div>
-                )}
-
-                <ShareIcon class="absolute bottom-4 right-4 transition-transform duration-200 ease-in-out transform group-hover:scale-105 opacity-80 group-hover:opacity-90" />
-              </div>
-            </article>
-          </a>
-        );
-      })
+              <ShareIcon class="absolute bottom-4 right-4 transition-transform duration-200 ease-in-out transform group-hover:scale-105 opacity-80 group-hover:opacity-90" />
+            </div>
+          </article>
+        </a>
+      ))
     }
   </div>
 
