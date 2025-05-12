@@ -6,7 +6,9 @@ import XIcon from "src/icons/XIcon.astro";
 import LinkedinIcon from "src/icons/LinkedinIcon.astro";
 ---
 
-<section class="lg:w-[740px] mx-auto mt-20 md:mt-36 md:mb-16 text-center">
+<section
+  class="lg:w-[740px] mx-auto mt-20 md:mt-36 md:mb-16 text-center flex flex-col items-center"
+>
   <div class="relative w-40 h-40 mx-auto mb-8 flex items-center justify-center">
     <div
       class="rounded-full absolute w-44 h-44 bg-gradient-to-tr from-blue-800 via-sky-700 to-indigo-800"
@@ -20,17 +22,32 @@ import LinkedinIcon from "src/icons/LinkedinIcon.astro";
   </div>
   <div class="text-gray-300 text-sm md:text-pretty md:text-base">
     <h1 class="text-white">
-      Hola 👋 soy, Ronaldo Moctezuma, Lic en Sistemas Computacionales<br />
-      apasionado por la programacion web, esencial en
+      ¡Hola! 👋 Soy <span
+        class="text-sky-400 font-bold underline decoration-wavy decoration-pink-500"
+        >Ronaldo Moctezuma</span
+      >,<br />
+      <span class="text-indigo-300">aspirante a desarrollador junior</span>
+      <br />con pasión por el <span class="text-yellow-300 font-semibold"
+        >JavaScript</span
+      >, el <span class="text-green-400 font-semibold">backend</span> y el <span
+        class="text-pink-400 font-semibold">diseño web</span
+      >.
     </h1>
     <h1 class="mb-4">
-      <span class="italic font-light">frontend y backend,</span>
-      siempre buscando 🔎 aprender y <br /> mejorar en cada proyecto que se me presente
-      ☝️.
+      <span class="italic font-light text-sky-300"
+        >Me encanta crear soluciones creativas y funcionales,</span
+      ><br />
+      siempre busco <span
+        class="text-emerald-400 font-bold underline decoration-wavy decoration-indigo-400"
+        >aprender</span
+      > y <span
+        class="text-orange-400 font-bold underline decoration-wavy decoration-pink-400"
+        >mejorar</span
+      > en cada proyecto 🚀.<br />
     </h1>
   </div>
   <ButtonCV />
-  <nav class="flex mt-4 justify-center space-x-4">
+  <nav class="flex mt-4 space-x-4 justify-center">
     <SocialLink href="https://github.com/ronalmoctz">
       <GithubIcon />
     </SocialLink>
@@ -42,16 +59,3 @@ import LinkedinIcon from "src/icons/LinkedinIcon.astro";
     </SocialLink>
   </nav>
 </section>
-
-<style>
-  @media (max-width: 768px) {
-    section {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    nav {
-      justify-content: center;
-    }
-  }
-</style>

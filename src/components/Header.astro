@@ -137,23 +137,11 @@ const navItems = [
 
 <style>
   nav {
-    animation: nav-shadown 1s linear both;
-    animation-timeline: scroll();
-    animation-range: 0 100px;
+    /* Puedes agregar aquí animaciones válidas si lo deseas, pero sin @apply */
+    /* Ejemplo: box-shadow, backdrop-filter, etc. */
+    /* box-shadow: 0 4px 12px rgba(0,0,0,0.08); */
   }
 
-  nav {
-    @apply dark:bg-gray-800/90 bg-white/50;
-  }
-
-  @keyframes nav-shadown {
-    0% {
-      @apply dark:bg-gray-800/0 bg-white/0;
-    }
-    to {
-      @apply shadow-lg ring-1 backdrop-blur ring-white/10;
-    }
-  }
   @media screen and (max-width: 768px) {
     #mobile-menu {
       position: fixed;

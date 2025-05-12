@@ -46,6 +46,22 @@ export const project = [
     description:
       "Desarollo de landing page usando Astro y Tailwind, con un enfoque en la optimizacion de SEO y el rendimiento, ademas de un diseño responsivo y atractivo. Para una PIME de granjas porcinas.",
     tags: ["Astro", "Tailwind"],
-    link: "https://granjas-rodriz.vercel.app/#home",
+    link: "https://granjas-rodriz.vercel.app/",
+  },
+  {
+    title: "WEB/API-Books",
+    image: "/web-books.png",
+    description:
+      "Consumo de libros via formulario, con una API REST con Bun, Express, TypeScript, Cloudinary y MySQL. Del lado del frontend, usamos React, ShadcnUI, Tailwind y cmdk.",
+    tags: ["Bun", "Express", "TypeScript", "MySQL", "Multer", "Cloudinary", "React", "Tailwind"],
+    link: "https://youtu.be/EWsosn-uGr4",
+  },
+  {
+    title: "Nueva UI/UX para Hotel Quinta Rivera",
+    image: "/quita_rivera.png",
+    description:
+      "Rediseño de la UI/UX para el hotel Quinta Rivera, con un enfoque en la usabilidad y la experiencia del usuario. Mejorando las secciones, el como se muestra la informacion y la navegacion.",
+    tags: ["Figma", "UI/UX", "Wireframes"],
+    link: "https://www.figma.com/design/p8k1VAjGtDZF8x62NoUBgM/Hotel-Quinta-Rivera?node-id=0-1&t=1TXb7i1XrbtgIdKc-1",
   },
 ];

@@ -4,35 +4,32 @@ import { certificateData } from "src/constants/certificates";
 
 <section class="pt-36 mx-auto">
   <h1
-    class="bg-gradient-to-bl from-violet-400 via-purple-600 to-fuchsia-700
-    text-4xl md:text-7xl font-bold py-8 inline-block text-transparent bg-clip-text"
+    class="bg-gradient-to-bl from-violet-400 via-purple-600 to-fuchsia-700 text-4xl md:text-7xl font-bold py-8 inline-block text-transparent bg-clip-text"
   >
     Certificados
   </h1>
 
-  <div class="carousel-wrapper overflow-hidden">
-    <div class="carousel-container flex gap-x-12" id="carousel-container">
+  <div class="relative w-full overflow-hidden rounded-2xl">
+    <div
+      class="flex gap-x-6 md:gap-x-12 animate-scroll-carousel will-change-transform overflow-x-auto md:overflow-x-visible no-scrollbar"
+      id="carousel-container"
+      style="animation: scroll 20s linear infinite;"
+    >
       {
-        // Duplicar los elementos para lograr el efecto infinito
         [...certificateData, ...certificateData].map((certificates, index) => (
-          <article
-            key={index}
-            class="carousel-item shrink-0 bg-gray-800 rounded-2xl
-            bg-clip-padding backdrop-filter backdrop-blur-md
-            bg-opacity-80 w-[400px] h-[520px]"
-          >
-            <div class="pt-4 px-4 w-[400px] h-[350px] flex justify-center">
+          <article class="carousel-item shrink-0 bg-gray-800/90 rounded-2xl w-[260px] md:w-[400px] h-[380px] md:h-[520px] flex flex-col">
+            <div class="pt-4 px-4 w-[260px] h-[180px] md:w-[400px] md:h-[350px] flex justify-center">
               <img
                 src={certificates.image}
                 alt={certificates.title}
                 class="w-full h-full object-cover rounded-2xl shadow-[rgba(6,_24,_44,_0.4)_0px_0px_0px_2px,_rgba(6,_24,_44,_0.65)_0px_4px_6px_-1px,_rgba(255,_255,_255,_0.08)_0px_1px_0px_inset]"
               />
             </div>
-            <div class="pt-4 px-8 text-gray-300">
-              <h1 class="font-semibold text-base">
+            <div class="pt-4 px-4 md:px-8 text-gray-300 flex-1">
+              <h1 class="font-semibold text-sm md:text-base">
                 {certificates.title} - {certificates.date}
               </h1>
-              <p class="pt-3 font-normal text-sm text-pretty">
+              <p class="pt-3 font-normal text-xs md:text-sm text-pretty">
                 {certificates.description}
               </p>
               <div class="flex flex-wrap gap-2 mt-3">
@@ -41,7 +38,11 @@ import { certificateData } from "src/constants/certificates";
                     key={iconIndex}
                     class="inline-flex bg-gradient-to-br from-neutral-200 to-neutral-400 px-2 rounded-full"
                   >
-                    <img src={icon.src} alt="" class="w-14 h-8 p-1" />
+                    <img
+                      src={icon.src}
+                      alt=""
+                      class="w-10 h-7 md:w-14 md:h-8 p-1"
+                    />
                   </div>
                 ))}
               </div>
@@ -54,56 +55,23 @@ import { certificateData } from "src/constants/certificates";
 </section>
 
 <style>
-  @media (min-width: 1024px) {
-    .carousel-wrapper {
-      position: relative;
-      width: 100%;
-      overflow: hidden;
+  @keyframes scroll {
+    0% {
+      transform: translateX(0);
     }
-
-    .carousel-container {
-      display: flex;
-      animation: scroll 20s linear infinite;
-    }
-
-    .carousel-item {
-      flex: 0 0 auto;
-    }
-
-    /* Animación infinita */
-    @keyframes scroll {
-      0% {
-        transform: translateX(0);
-      }
-      100% {
-        transform: translateX(-50%);
-      }
-    }
-
-    /* Pausar la animación al interactuar */
-    .carousel-item:hover {
-      animation-play-state: paused !important;
+    100% {
+      transform: translateX(-50%);
     }
   }
-
-  /* Ocultar scrollbars */
+  .animate-scroll-carousel {
+    animation: scroll 20s linear infinite;
+  }
   .no-scrollbar::-webkit-scrollbar {
     display: none;
   }
-
   .no-scrollbar {
     -ms-overflow-style: none;
     scrollbar-width: none;
-  }
-  @media (max-width: 1023px) {
-    .carousel-container {
-      overflow-x: auto;
-      scroll-snap-type: x mandatory;
-    }
-
-    .carousel-item {
-      scroll-snap-align: start;
-    }
   }
 </style>
 

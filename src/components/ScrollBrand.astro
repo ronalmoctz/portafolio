@@ -14,43 +14,45 @@ import JavaScriptIcon from "src/icons/JavaScriptIcon.astro";
 ---
 
 <section>
-  <div class="scroller mx-auto">
-    <ul class="tag-list scroller__inner">
-      <li>
-        <ReactIcon />
+  <div class="scroller mx-auto max-w-[1280px]">
+    <ul
+      class="tag-list scroller__inner flex gap-[2.2rem] md:gap-4 py-4 m-0 p-0 list-none"
+    >
+      <li class="p-[1.8rem] md:p-4">
+        <ReactIcon class="w-[60px] h-[60px] md:w-10 md:h-10" />
       </li>
-      <li>
-        <AstroIcon />
+      <li class="p-[1.8rem] md:p-4">
+        <AstroIcon class="w-[60px] h-[60px] md:w-10 md:h-10" />
       </li>
-      <li>
-        <ExpressIcons />
+      <li class="p-[1.8rem] md:p-4">
+        <ExpressIcons class="w-[60px] h-[60px] md:w-10 md:h-10" />
       </li>
-      <li>
-        <FigmaIcon />
+      <li class="p-[1.8rem] md:p-4">
+        <FigmaIcon class="w-[60px] h-[60px] md:w-10 md:h-10" />
       </li>
-      <li>
-        <MySQLIcon />
+      <li class="p-[1.8rem] md:p-4">
+        <MySQLIcon class="w-[60px] h-[60px] md:w-10 md:h-10" />
       </li>
-      <li>
-        <TailwindIcon />
+      <li class="p-[1.8rem] md:p-4">
+        <TailwindIcon class="w-[60px] h-[60px] md:w-10 md:h-10" />
       </li>
-      <li>
-        <CSSIscon />
+      <li class="p-[1.8rem] md:p-4">
+        <CSSIscon class="w-[60px] h-[60px] md:w-10 md:h-10" />
       </li>
-      <li>
-        <HTMLIcon />
+      <li class="p-[1.8rem] md:p-4">
+        <HTMLIcon class="w-[60px] h-[60px] md:w-10 md:h-10" />
       </li>
-      <li>
-        <JavaScriptIcon />
+      <li class="p-[1.8rem] md:p-4">
+        <JavaScriptIcon class="w-[60px] h-[60px] md:w-10 md:h-10" />
       </li>
-      <li>
-        <CiscoIcon />
+      <li class="p-[1.8rem] md:p-4">
+        <CiscoIcon class="w-[60px] h-[60px] md:w-10 md:h-10" />
       </li>
-      <li>
-        <Bashlicons />
+      <li class="p-[1.8rem] md:p-4">
+        <Bashlicons class="w-[60px] h-[60px] md:w-10 md:h-10" />
       </li>
-      <li>
-        <GitbashIcons />
+      <li class="p-[1.8rem] md:p-4">
+        <GitbashIcons class="w-[60px] h-[60px] md:w-10 md:h-10" />
       </li>
     </ul>
   </div>
@@ -67,21 +69,7 @@ import JavaScriptIcon from "src/icons/JavaScriptIcon.astro";
     list-style: none;
   }
 
-  .tag-list li {
-    padding: 1.8rem;
-  }
-
-  .tag-list li svg {
-    width: 60px;
-    height: 60px;
-  }
-
-  .scroller__inner {
-    padding-block: 1rem;
-    display: flex;
-    gap: 2.2rem;
-  }
-
+  /* El resto del CSS se mantiene igual, solo se migraron los media queries a Tailwind */
   .scroller[data-animated="true"] {
     overflow: hidden;
     mask: linear-gradient(
@@ -99,21 +87,6 @@ import JavaScriptIcon from "src/icons/JavaScriptIcon.astro";
     animation: scroll 32s linear infinite;
   }
 
-  @media (max-width: 768px) {
-    .tag-list li {
-      padding: 1rem;
-    }
-
-    .tag-list li svg {
-      width: 40px;
-      height: 40px;
-    }
-
-    .scroller__inner {
-      gap: 1rem;
-    }
-  }
-
   @keyframes scroll {
     to {
       transform: translate(calc(-50% - 0.5rem));
@@ -121,20 +94,19 @@ import JavaScriptIcon from "src/icons/JavaScriptIcon.astro";
   }
 </style>
 
-<script>
-  const scrollers = document.querySelectorAll(".scroller");
-
-  // If a user hasn't opted in for recuded motion, then we add the animation
+<script is:inline>
+  // Si un usuario no ha optado por reduced motion, entonces agregamos la animación
   if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
     addAnimation();
   }
 
   function addAnimation() {
+    const scrollers = document.querySelectorAll(".scroller");
     scrollers.forEach((scroller) => {
       // add data-animated="true" to every `.scroller` on the page
       scroller.setAttribute("data-animated", true);
 
-      // Make an array from the elements within `.scroller-inner`
+      // Make an array from the elements within `.scroller__inner`
       const scrollerInner = scroller.querySelector(".scroller__inner");
       const scrollerContent = Array.from(scrollerInner.children);
 
