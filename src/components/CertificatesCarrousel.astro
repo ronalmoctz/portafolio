@@ -1,6 +1,7 @@
 ---
 import { certificateData } from "src/constants/certificates";
-import Card3D from "./Card3D.astro";
+import RightArrow from "src/icons/RightArrow.astro";
+import LeftArrow from "src/icons/LeftArrow.astro";
 ---
 
 <section class="pt-36 mx-auto">
@@ -12,12 +13,11 @@ import Card3D from "./Card3D.astro";
 
   <div class="relative w-full overflow-hidden rounded-2xl">
     <div
-      class="flex gap-x-6 md:gap-x-12 animate-scroll-carousel will-change-transform overflow-x-auto md:overflow-x-visible no-scrollbar"
+      class="flex overflow-x-scroll md:overflow-x-hidden no-scrollbar gap-x-12 mt-8 p-16 md:[mask-image:linear-gradient(90deg,transparent,white_20%,white_80%,transparent)]"
       id="carousel-container"
-      style="animation: scroll 20s linear infinite;"
     >
       {
-        [...certificateData, ...certificateData].map((certificates, index) => (
+        certificateData.map((certificates, index) => (
           <article class="carousel-item shrink-0 bg-gray-800/90 rounded-2xl w-[260px] md:w-[400px] h-[380px] md:h-[520px] flex flex-col">
             <div class="pt-4 px-4 w-[260px] h-[180px] md:w-[400px] md:h-[350px] flex justify-center">
               <img
@@ -49,21 +49,28 @@ import Card3D from "./Card3D.astro";
         ))
       }
     </div>
+
+    <div class="hidden md:flex absolute bottom-1 right-4 gap-2">
+      <button
+        id="left-button"
+        class="w-12 h-12 rounded-full bg-gray-800/80 backdrop-blur-sm border border-gray-600 text-gray-300 0 transition-all duration-200 flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
+        aria-label="Certificado anterior"
+      >
+        <LeftArrow />
+      </button>
+      <button
+        id="right-button"
+        class="w-12 h-12 rounded-full bg-gray-800/80 backdrop-blur-sm border border-gray-600 text-gray-300 transition-all duration-200 flex items-center justify-center disabled:opacity-50 disabled:cursor-not-allowed"
+        aria-label="Siguiente certificado"
+      >
+        <RightArrow />
+      </button>
+    </div>
   </div>
 </section>
 
 <style>
-  @keyframes scroll {
-    0% {
-      transform: translateX(0);
-    }
-    100% {
-      transform: translateX(-50%);
-    }
-  }
-  .animate-scroll-carousel {
-    animation: scroll 20s linear infinite;
-  }
+  /* Ocultar scrollbar */
   .no-scrollbar::-webkit-scrollbar {
     display: none;
   }
@@ -74,15 +81,68 @@ import Card3D from "./Card3D.astro";
 </style>
 
 <script>
-  const container = document.getElementById("carousel-container");
-  const items = document.querySelectorAll(".carousel-item");
+  document.addEventListener("DOMContentLoaded", () => {
+    const carouselContainer = document.getElementById("carousel-container");
+    const rightButton = document.getElementById("right-button");
+    const leftButton = document.getElementById("left-button");
+    const scrollAmount = 350;
 
-  items.forEach((item) => {
-    item.addEventListener("mouseenter", () => {
-      container.style.animationPlayState = "paused";
-    });
-    item.addEventListener("mouseleave", () => {
-      container.style.animationPlayState = "running";
-    });
+    // Función para navegar el carousel
+    function scrollCarousel(direction) {
+      if (!carouselContainer) return;
+
+      const scrollLeft = direction === "right" ? scrollAmount : -scrollAmount;
+      carouselContainer.scrollBy({ left: scrollLeft, behavior: "smooth" });
+    }
+
+    // Función para actualizar el estado de los botones
+    function updateButtonState() {
+      if (!carouselContainer || !leftButton || !rightButton) return;
+
+      const { scrollLeft, scrollWidth, clientWidth } = carouselContainer;
+      const isAtStart = scrollLeft <= 10; // Pequeña tolerancia para valores flotantes
+      const isAtEnd = scrollLeft + clientWidth >= scrollWidth - 10;
+
+      // Actualizar estado disabled
+      leftButton.disabled = isAtStart;
+      rightButton.disabled = isAtEnd;
+
+      // Feedback visual adicional
+      if (isAtStart) {
+        leftButton.classList.add("opacity-50");
+      } else {
+        leftButton.classList.remove("opacity-50");
+      }
+
+      if (isAtEnd) {
+        rightButton.classList.add("opacity-50");
+      } else {
+        rightButton.classList.remove("opacity-50");
+      }
+    }
+
+    // Event listeners para los botones
+    if (rightButton && carouselContainer) {
+      rightButton.addEventListener("click", () => {
+        scrollCarousel("right");
+      });
+    }
+
+    if (leftButton && carouselContainer) {
+      leftButton.addEventListener("click", () => {
+        scrollCarousel("left");
+      });
+    }
+
+    // Event listeners para actualizar el estado de los botones
+    if (carouselContainer) {
+      carouselContainer.addEventListener("scroll", updateButtonState);
+      window.addEventListener("load", () => {
+        updateButtonState();
+      });
+
+      // Verificación inicial del estado
+      setTimeout(updateButtonState, 100);
+    }
   });
 </script>
