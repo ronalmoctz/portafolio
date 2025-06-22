@@ -1,113 +1,96 @@
----
-import SectionContainer from "./SectionContainer.astro";
----
+ import * as THREE from "three";
 
-<SectionContainer>
-  <section class="intro-canvas-container" id="textContainer"></section>
-</SectionContainer>
+  export function initHeroAnimation(containerId = "textContainer") {
+    const textContainer = document.getElementById(containerId);
+    if (!textContainer) return;
 
-<style>
-  .intro-canvas-container {
-    position: relative;
-    width: 100%;
-    height: 80vh;
-    margin-top: 100px;
-    min-height: 320px;
-    max-width: 100vw;
-    overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  #textContainer canvas {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100% !important;
-    height: 100% !important;
-    display: block;
-    background: transparent !important;
-  }
-</style>
-<script src="https://unpkg.com/three@0.155.0/build/three.min.js"></script>
-<script is:inline>
-  document.addEventListener("DOMContentLoaded", () => {
-    const textContainer = document.getElementById("textContainer");
-    if (!textContainer || !window.THREE) return;
     let easeFactor = 0.02;
     let scene, camera, renderer, planeMesh;
     let mousePosition = { x: 0.5, y: 0.5 };
     let targetMousePosition = { x: 0.5, y: 0.5 };
     let prevPosition = { x: 0.5, y: 0.5 };
+
     const vertexShader = `
     varying vec2 vUv;
     void main() {
       vUv = uv;
       gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
     }
-    `;
+  `;
+
     const fragmentShader = `
     varying vec2 vUv;
     uniform sampler2D u_texture;
     uniform vec2 u_mouse;
     uniform vec2 u_prevMouse;
-    
+
     void main() {
       vec2 gridUV = floor(vUv * vec2(40.0, 40.0)) / vec2(40.0, 40.0);
       vec2 centerOfPixel = gridUV + vec2(1.0/40.0, 1.0/40.0);
+
       vec2 mouseDirection = u_mouse - u_prevMouse;
       vec2 pixelToMouse = centerOfPixel - u_mouse;
       float dist = length(pixelToMouse);
       float strength = smoothstep(0.3, 0.0, dist);
+
       vec2 uvOffset = strength * -mouseDirection * 0.3;
       vec2 uv = vUv - uvOffset;
       vec4 color = texture2D(u_texture, uv);
       gl_FragColor = color;
     }
-    `;
-    function createTextTexture(
-      textLines,
-      font,
-      size,
-      color,
-      fontWeight = "100"
-    ) {
-      const scaleFactor = 4;
-      const canvasWidth = textContainer.offsetWidth * scaleFactor;
-      const canvasHeight = textContainer.offsetHeight * scaleFactor;
+  `;
+
+    function createTextTexture(text, font, size, color, fontWeight = "100") {
       const canvas = document.createElement("canvas");
       const ctx = canvas.getContext("2d");
+      const canvasWidth = window.innerWidth * 2;
+      const canvasHeight = window.innerHeight * 2;
       canvas.width = canvasWidth;
       canvas.height = canvasHeight;
-      ctx.clearRect(0, 0, canvasWidth, canvasHeight);
-      ctx.fillStyle = "rgba(0,0,0,0)";
+
+      ctx.fillStyle = color || "#ffffff";
       ctx.fillRect(0, 0, canvasWidth, canvasHeight);
-      const fontSize = size || Math.floor(canvasHeight * 0.22);
+
+      const fontSize = size || Math.floor(canvasWidth * 0.2);
+      ctx.fillStyle = "#1a1a1a";
+      // ← CORRECCIÓN: asignación a ctx.font
       ctx.font = `${fontWeight} ${fontSize}px "${font || "Recursive Variable"}"`;
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
       ctx.imageSmoothingEnabled = true;
       ctx.imageSmoothingQuality = "high";
-      const lineHeight = fontSize * 1.1;
-      const totalHeight = lineHeight * textLines.length;
-      ctx.strokeStyle = "#fff";
-      ctx.lineWidth = fontSize * 0.01;
-      textLines.forEach((line, i) => {
-        const y =
-          canvasHeight / 2 - totalHeight / 2 + lineHeight * i + lineHeight / 2;
-        for (let j = 0; j < 2; j++) {
-          ctx.strokeText(line, canvasWidth / 2, y);
-        }
-        ctx.fillStyle = "#fff";
-        ctx.fillText(line, canvasWidth / 2, y);
-      });
-      return new window.THREE.CanvasTexture(canvas);
+
+      const metrics = ctx.measureText(text);
+      const textWidth = metrics.width;
+      // ← CORRECCIÓN: paréntesis balanceados
+      const scaleFactor = Math.min(1, (canvasWidth * 1) / textWidth);
+      const aspectCorrection = canvasWidth / canvasHeight;
+
+      ctx.setTransform(
+        scaleFactor,
+        0,
+        0,
+        scaleFactor / aspectCorrection,
+        canvasWidth / 2,
+        canvasHeight / 2
+      );
+
+      ctx.strokeStyle = "#1a1a1a";
+      ctx.lineWidth = fontSize * 0.005;
+      for (let i = 0; i < 3; i++) {
+        ctx.strokeText(text, 0, 0);
+      }
+      // ← CORRECCIÓN: fillText requiere x e y
+      ctx.fillText(text, 0, 0);
+
+      return new THREE.CanvasTexture(canvas);
     }
+
     function initializeScene(texture) {
-      scene = new window.THREE.Scene();
-      const aspectRatio =
-        textContainer.offsetWidth / textContainer.offsetHeight;
-      camera = new window.THREE.OrthographicCamera(
+      scene = new THREE.Scene();
+
+      const aspectRatio = window.innerWidth / window.innerHeight;
+      camera = new THREE.OrthographicCamera(
         -1,
         1,
         1 / aspectRatio,
@@ -116,52 +99,53 @@ import SectionContainer from "./SectionContainer.astro";
         1000
       );
       camera.position.z = 1;
+
       const shaderUniforms = {
-        u_mouse: { value: new window.THREE.Vector2() },
-        u_prevMouse: { value: new window.THREE.Vector2() },
+        u_mouse: { value: new THREE.Vector2() },
+        u_prevMouse: { value: new THREE.Vector2() },
         u_texture: { value: texture },
       };
-      planeMesh = new window.THREE.Mesh(
-        new window.THREE.PlaneGeometry(2, 2),
-        new window.THREE.ShaderMaterial({
+
+      // ← CORRECCIÓN: nombre consistente planeMesh
+      planeMesh = new THREE.Mesh(
+        new THREE.PlaneGeometry(2, 2),
+        new THREE.ShaderMaterial({
           uniforms: shaderUniforms,
           vertexShader,
           fragmentShader,
         })
       );
       scene.add(planeMesh);
-      renderer = new window.THREE.WebGLRenderer({
-        antialias: true,
-        alpha: true,
-      });
-      // renderer.setClearColor(0x0b0b0b, 1);
-      renderer.setSize(textContainer.offsetWidth, textContainer.offsetHeight);
+
+      renderer = new THREE.WebGLRenderer({ antialias: true });
+      renderer.setClearColor(0xffffffff, 1);
+      renderer.setSize(window.innerWidth, window.innerHeight);
       renderer.setPixelRatio(window.devicePixelRatio);
+
       textContainer.appendChild(renderer.domElement);
     }
+
     function reloadTexture() {
       const newTex = createTextTexture(
-        ["RONALDO", "MOCTEZUMA"],
+        "RONALDO",
         "Recursive Variable",
         null,
-        "#F7F7F7",
-        "700"
+        "#ffffff",
+        "100"
       );
       planeMesh.material.uniforms.u_texture.value = newTex;
     }
+
     initializeScene(
-      createTextTexture(
-        ["RONALDO", "MOCTEZUMA"],
-        "Recursive Variable",
-        null,
-        "#F7F7F7",
-        "700"
-      )
+      createTextTexture("RONALDO", "Recursive Variable", null, "#ffffff", "100")
     );
+
     function animateScene() {
       requestAnimationFrame(animateScene);
+
       mousePosition.x += (targetMousePosition.x - mousePosition.x) * easeFactor;
       mousePosition.y += (targetMousePosition.y - mousePosition.y) * easeFactor;
+
       planeMesh.material.uniforms.u_mouse.value.set(
         mousePosition.x,
         1.0 - mousePosition.y
@@ -173,9 +157,12 @@ import SectionContainer from "./SectionContainer.astro";
       renderer.render(scene, camera);
     }
     animateScene();
+
+    // ← CORRECCIÓN: listeners apuntando a funciones correctas
     textContainer.addEventListener("mousemove", handleMouseMove);
     textContainer.addEventListener("mouseenter", handleMouseEnter);
     textContainer.addEventListener("mouseleave", handleMouseLeave);
+
     function handleMouseMove(event) {
       easeFactor = 0.04;
       const rect = textContainer.getBoundingClientRect();
@@ -183,6 +170,7 @@ import SectionContainer from "./SectionContainer.astro";
       targetMousePosition.x = (event.clientX - rect.left) / rect.width;
       targetMousePosition.y = (event.clientY - rect.top) / rect.height;
     }
+
     function handleMouseEnter(event) {
       easeFactor = 0.02;
       const rect = textContainer.getBoundingClientRect();
@@ -191,21 +179,22 @@ import SectionContainer from "./SectionContainer.astro";
       mousePosition.y = targetMousePosition.y =
         (event.clientY - rect.top) / rect.height;
     }
+
     function handleMouseLeave() {
       easeFactor = 0.02;
       targetMousePosition = { ...prevPosition };
     }
+
     window.addEventListener("resize", onWindowResize, false);
     function onWindowResize() {
-      const aspectRatio =
-        textContainer.offsetWidth / textContainer.offsetHeight;
+      const aspectRatio = window.innerWidth / window.innerHeight;
       camera.left = -1;
       camera.right = 1;
       camera.top = 1 / aspectRatio;
       camera.bottom = -1 / aspectRatio;
       camera.updateProjectionMatrix();
-      renderer.setSize(textContainer.offsetWidth, textContainer.offsetHeight);
+
+      renderer.setSize(window.innerWidth, window.innerHeight);
       reloadTexture();
     }
-  });
-</script>
+  }

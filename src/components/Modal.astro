@@ -1,0 +1,66 @@
+---
+const { id = "modal", maxWidth = "max-w-3xl" } = Astro.props;
+---
+
+<section
+  id={id}
+  class="modal fixed inset-0 z-50 bg-black/70 backdrop-blur-md flex items-center justify-center opacity-0 pointer-events-none transition-all duration-300 p-4"
+>
+  <div
+    class={`modal-content relative bg-white dark:bg-neutral-900 rounded-xl shadow-xl ${maxWidth} w-full max-h-[90vh] overflow-hidden transform scale-95 transition-transform duration-300`}
+  >
+    <!-- Header con botón de cerrar -->
+    <header
+      class="flex justify-between items-center p-4 border-b border-gray-200 dark:border-neutral-700"
+    >
+      <div class="flex-1"></div>
+      <button
+        id={`close-${id}`}
+        class="p-2 hover:bg-neutral-200 dark:hover:bg-neutral-800 rounded-full transition-colors group"
+        aria-label="Cerrar modal"
+      >
+        <svg
+          class="w-6 h-6 text-gray-600 dark:text-gray-400 group-hover:text-gray-800 dark:group-hover:text-gray-200"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
+    </header>
+
+    <!-- Cuerpo del modal con scroll -->
+    <div id={`${id}-body`} class="p-6 overflow-y-auto max-h-[calc(90vh-80px)]">
+      <!-- El contenido se insertará dinámicamente aquí -->
+    </div>
+  </div>
+</section>
+
+<style>
+  .modal-active {
+    opacity: 1 !important;
+    pointer-events: auto !important;
+  }
+
+  .modal-active .modal-content {
+    transform: scale(1) !important;
+  }
+
+  .modal-active {
+    animation: modalFadeIn 0.3s ease-out;
+  }
+
+  @keyframes modalFadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+</style>

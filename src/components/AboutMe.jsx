@@ -61,7 +61,7 @@ function AboutMe() {
                     {item.label.map((label, labelIndex) => (
                       <div
                         key={labelIndex}
-                        className="inline-flex items-center px-2 py-0.5 border border-neutral-700 dark:border-neutral-500 bg-neutral-900 text-neutral-100 text-xs md:text-sm rounded-full font-mono font-normal shadow-sm"
+                        className="inline-flex items-center px-2 py-0.5 border border-neutral-700 dark:border-neutral-500 bg-neutral-900 text-neutral-100 text-xs md:text-sm rounded-full f shadow-sm"
                         style={{ letterSpacing: "0.01em" }}
                       >
                         {label}

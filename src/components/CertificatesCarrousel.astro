@@ -1,5 +1,6 @@
 ---
 import { certificateData } from "src/constants/certificates";
+import Card3D from "./Card3D.astro";
 ---
 
 <section class="pt-36 mx-auto">
@@ -33,11 +34,8 @@ import { certificateData } from "src/constants/certificates";
                 {certificates.description}
               </p>
               <div class="flex flex-wrap gap-2 mt-3">
-                {certificates.icons.map((icon, iconIndex) => (
-                  <div
-                    key={iconIndex}
-                    class="inline-flex bg-gradient-to-br from-neutral-200 to-neutral-400 px-2 rounded-full"
-                  >
+                {certificates.icons.map((icon) => (
+                  <div class="inline-flex bg-gradient-to-br from-neutral-200 to-neutral-400 px-2 rounded-full">
                     <img
                       src={icon.src}
                       alt=""

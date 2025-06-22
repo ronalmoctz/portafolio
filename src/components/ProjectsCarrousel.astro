@@ -1,121 +1,322 @@
 ---
 import { project } from "src/constants/projects";
-import ShareIcon from "src/icons/ShareIcon.astro";
-import LeftArrow from "src/icons/LeftArrow.astro";
-import RightArrow from "src/icons/RightArrow.astro";
+import LinkIcon from "src/assets/LinkIcon.svg";
+import Modal from "./Modal.astro";
+
+const url = new URL(Astro.url);
+const selectedCategory = url.searchParams.get("category") ?? "all";
+
+function normalizeCategory(str: string) {
+  return str.toLowerCase().replace(/[^a-z0-9]/g, "");
+}
 ---
 
 <section class="pt-20 md:pt-36 mx-auto ml-8 mt-10 mb-10">
   <h1
-    class="text-4xl bg-gradient-to-bl from-sky-500 via-sky-600 to-blue-800
-    md:text-7xl font-bold py-8 inline-block text-transparent bg-clip-text"
+    class="text-4xl bg-gradient-to-bl from-sky-500 via-sky-600 to-blue-800 md:text-7xl font-bold py-8 inline-block text-transparent bg-clip-text"
   >
     Proyectos
   </h1>
 
-  <div
-    class="flex overflow-x-scroll md:overflow-x-hidden no-scrollbar gap-x-12 mt-8 p-8 carousel custom-scrollbar md:[mask-image:linear-gradient(90deg,transparent,white,20%,white_90%,transparent)]"
-    id="carousel"
-  >
+  <!-- Filtros -->
+  <div class="flex gap-6 mt-6 mb-8" id="category-filters">
     {
-      project.map((project) => (
-        <a
-          href={project.link}
-          target="_blank"
-          rel="noopener noreferrer"
-          class="group shrink-0 bg-gray-700 rounded-2xl
-          bg-clip-padding backdrop-filter backdrop-blur-md
-           bg-opacity-20 w-[750px] h-[600px] text-gray-300 relative transition-transform hover:scale-[1.01]"
-          aria-label={`Ir al proyecto ${project.title}`}
-        >
-          <article class="w-full h-full flex flex-col">
-            <div class="pt-4 px-4 w-full h-[450px] flex justify-center">
-              <img
-                src={project.image}
-                alt={project.title}
-                aria-label="img-projects"
-                class="w-full h-full object-cover rounded-2xl shadow-[0px_4px_13px_1px_rgba(0,_0,_0,_0.1)]"
-              />
-            </div>
-
-            <div class="px-4 pb-4 pt-2 relative flex flex-col gap-3">
-              <h1 class="font-semibold text-base">{project.title}</h1>
-              <h2 class="font-normal text-sm text-pretty">
-                {project.description}
-              </h2>
-
-              {project.tags && project.tags.length > 0 && (
-                <div class="flex gap-2 mt-2 flex-wrap items-center">
-                  {project.tags.map((tag) => (
-                    <span class="px-3 py-1 rounded-full border border-neutral-700 bg-neutral-800/60 text-xs font-semibold text-white shadow-sm transition-all select-none">
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              )}
-
-              <ShareIcon class="absolute bottom-4 right-4 transition-transform duration-200 ease-in-out transform group-hover:scale-105 opacity-80 group-hover:opacity-90" />
-            </div>
-          </article>
-        </a>
-      ))
+      ["all", "backend", "frontend", "figma", "redes"].map((cat) => {
+        const isActive = normalizeCategory(selectedCategory) === cat;
+        return (
+          <button
+            class={`filter-btn group relative text-sm px-1 transition-all 
+        ${isActive ? "text-sky-500 bg-sky-500/10" : "text-gray-200 hover:text-sky-400"}`}
+            data-category={cat}
+          >
+            {cat.charAt(0).toUpperCase() + cat.slice(1)}
+          </button>
+        );
+      })
     }
   </div>
 
-  <div class="hidden md:flex items-center gap-x-4 mt-8 justify-end">
-    <button
-      class="rounded-full border p-1 transition-all"
-      id="left-button"
-      aria-label="Ir al elemento anterior"
-    >
-      <LeftArrow />
-    </button>
-    <button
-      class="rounded-full border p-1 transition-all"
-      id="right-button"
-      aria-label="Ir al siguiente elemento"
-    >
-      <RightArrow />
-    </button>
+  <!-- Proyectos -->
+  <div
+    class="grid gap-8 grid-cols-1 md:grid-cols-2 xl:grid-cols-3"
+    id="projects-container"
+  >
+    {
+      project.map((p, index) => (
+        <article
+          class={`project-card group bg-gray-700 rounded-2xl bg-clip-padding backdrop-filter backdrop-blur-md bg-opacity-20 w-full h-[400px] text-gray-300 relative transform transition-all duration-300 ease-out  hover:scale-[1.02]
+            ${selectedCategory !== "all" && !p.category.map((c) => c.toLowerCase()).includes(selectedCategory) ? "hidden opacity-0 -translate-y-4" : "block opacity-100 translate-y-0"}`}
+          data-categories={p.category.map((c) => c.toLowerCase()).join(",")}
+          data-project-id={`project-${index}`}
+          aria-label={`Ver detalles del proyecto ${p.title}`}
+        >
+          <div class="w-full h-full flex flex-col">
+            <div class="pt-4 px-4 w-full h-[350px] flex justify-center">
+              <img
+                src={p.image}
+                alt={p.title}
+                class="w-full h-[300px] object-cover rounded-2xl shadow"
+              />
+            </div>
+            <div class="px-4 pb-4 pt-2 relative flex flex-col gap-3">
+              <h1 class="font-semibold text-base">{p.title}</h1>
+            
+              <!-- Botones de acción -->
+              <div class="flex gap-2 mt-auto">
+                <button 
+                  class="view-details-btn flex-1 px-1 py-1 border border-neutral-700 dark:border-neutral-500 bg-neutral-900 text-neutral-100 text-xs md:text-sm rounded-full  shadow-sm hover:bg-neutral-800 dark:hover:bg-neutral-600 transition-colors"
+                  data-project-index={index}
+                >
+                  Ver Detalles
+                </button>
+                {p.link && (
+                  <a
+                    href={p.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="flex-1  text-center px-1 py-1 border border-neutral-700 dark:border-neutral-500 bg-neutral-900 text-neutral-100 text-xs md:text-sm rounded-full shadow-sm hover:bg-neutral-800 dark:hover:bg-neutral-600 transition-colors"
+                  >
+                    Ver Proyecto
+                  </a>
+                  
+                )}
+              </div>
+            </div>
+          </div>
+        </article>
+      ))
+    }
   </div>
 </section>
 
-<script>
-  const carouselContainer = document.querySelector(
-    "#carousel"
-  ) as HTMLElement | null;
-  const rightButton = document.querySelector(
-    "#right-button"
-  ) as HTMLButtonElement | null;
-  const leftButton = document.querySelector(
-    "#left-button"
-  ) as HTMLButtonElement | null;
+<!-- Modal para mostrar detalles del proyecto -->
+<Modal id="project-modal" />
 
-  const scrollAmount = 350;
-
-  if (rightButton && carouselContainer) {
-    rightButton.addEventListener("click", () => {
-      carouselContainer.scrollBy({ left: scrollAmount, behavior: "smooth" });
-    });
+<style>
+  .filter-btn {
+    padding: 0 0.25rem;
+    position: relative;
   }
 
-  if (leftButton && carouselContainer) {
-    leftButton.addEventListener("click", () => {
-      carouselContainer.scrollBy({ left: -scrollAmount, behavior: "smooth" });
-    });
+  .filter-btn::after {
+    content: "";
+    height: 1px;
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    background-color: transparent;
+    transition: all 0.2s ease-out;
   }
 
-  const updateButtonState = () => {
-    if (!carouselContainer || !leftButton || !rightButton) return;
-    const { scrollLeft, scrollWidth, clientWidth } = carouselContainer;
-    leftButton.disabled = scrollLeft === 0;
-    rightButton.disabled = scrollLeft + clientWidth >= scrollWidth;
-  };
-
-  if (carouselContainer) {
-    carouselContainer.addEventListener("scroll", updateButtonState);
-    window.addEventListener("load", () => {
-      updateButtonState();
-    });
+  .filter-btn::before {
+    content: "";
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    right: -6px;
+    bottom: -2px;
+    background-color: #38bdf8;
+    opacity: 0;
+    transition: all 0.2s ease-out;
   }
+
+  .filter-btn:not(.text-sky-500):hover::after {
+    width: 0;
+  }
+
+  .filter-btn:not(.text-sky-500):hover::before {
+    opacity: 1;
+    animation: blink 0.4s infinite 0.1s;
+  }
+
+  /* Efecto permanente para botón activo */
+  .filter-btn.text-sky-500::before {
+    opacity: 1;
+    animation: blink 0.6s infinite;
+  }
+
+  @keyframes blink {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0;
+    }
+  }
+</style>
+
+<script define:vars={{ projects: project }}>
+  document.addEventListener("DOMContentLoaded", () => {
+    const filterButtons = document.querySelectorAll(".filter-btn");
+    const projectCards = document.querySelectorAll(".project-card");
+    const modal = document.getElementById("project-modal");
+    const modalBody = document.getElementById("project-modal-body");
+    const closeBtn = document.getElementById("close-project-modal");
+    const viewDetailsButtons = document.querySelectorAll(".view-details-btn");
+
+    // Función para aplicar filtros - CORREGIDA
+    function applyFilter(category) {
+      filterButtons.forEach((btn) => {
+        // Remover todas las clases de estado activo
+        btn.classList.remove("text-sky-500", "bg-sky-500/10");
+        btn.classList.add("text-gray-200");
+
+        // Aplicar clases al botón activo
+        if (btn.dataset.category === category) {
+          btn.classList.remove("text-gray-200");
+          btn.classList.add("text-sky-500", "bg-sky-500/10");
+        }
+      });
+
+      projectCards.forEach((card) => {
+        const cardCategories = card.dataset.categories.split(",");
+
+        if (category === "all" || cardCategories.includes(category)) {
+          card.classList.remove("hidden", "opacity-0", "-translate-y-4");
+          card.classList.add("block", "opacity-100", "translate-y-0");
+        } else {
+          card.classList.add("hidden", "opacity-0", "-translate-y-4");
+          card.classList.remove("block", "opacity-100", "translate-y-0");
+        }
+      });
+
+      const newUrl =
+        category === "all"
+          ? `${window.location.pathname}#proyectos`
+          : `${window.location.pathname}?category=${category}#proyectos`;
+      window.history.replaceState({ category }, "", newUrl);
+    }
+
+    // Función para abrir modal con detalles del proyecto
+    function openProjectModal(projectIndex) {
+      const project = projects[projectIndex];
+      
+      const modalContent = `
+            <section class="flex flex-col gap-y-8 px-6 py-4 md:px-10">
+              <!-- Imagen con aspect-ratio para prevenir saltos -->
+              <div class="text-center">
+                <div class="w-full max-w-2xl mx-auto aspect-w-16 aspect-h-9">
+                  <img
+                    src="${project.image}"
+                    alt="${project.title}"
+                    class="object-cover rounded-xl shadow-lg w-full h-full"
+                  />
+                </div>
+              </div>
+
+              <!-- Título y descripción -->
+              <div class="flex flex-col gap-y-4 text-center md:text-left">
+                <h1 class="text-3xl font-bold text-gray-900 dark:text-white">
+                  ${project.title}
+                </h1>
+                <p class="text-gray-700 dark:text-gray-300 text-lg leading-relaxed">
+                  ${project.description}
+                </p>
+              </div>
+
+              <!-- Tags -->
+              ${
+                project.tags?.length > 0
+                  ? `
+                <div class="flex flex-col gap-y-3">
+                  <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+                    Tecnologías utilizadas:
+                  </h3>
+                  <div class="flex flex-wrap gap-2">
+                    ${project.tags
+                      .map(
+                        (tag) => `
+                      <span class="px-3 py-1 border border-neutral-700 dark:border-neutral-500 bg-neutral-800 text-neutral-100 text-xs md:text-sm rounded-full  shadow-sm">
+                        ${tag}
+                      </span>`
+                      )
+                      .join("")}
+                  </div>
+                </div>`
+                  : ``
+              }
+
+              <!-- Enlace con hover animado -->
+              ${
+                project.link
+                  ? `
+                <div class="pt-6 border-t border-gray-200 dark:border-gray-700 text-center md:text-left">
+                  <a
+                    href="${project.link}"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="inline-flex items-center gap-2 font-medium text-gray-700 dark:text-gray-300
+                          relative after:content-[''] after:absolute after:left-0 after:bottom-0 after:h-[1px]
+                          after:w-0 after:bg-sky-500 after:transition-all after:duration-200
+                          hover:after:w-full"
+                  >
+                    <span>Ver Proyecto Completo</span>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="18" height="18"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                      <path d="M9 15l6 -6" />
+                      <path d="M11 6l.463 -.536a5 5 0 0 1 7.071 7.072l-.534 .464" />
+                      <path d="M13 18l-.397 .534a5.068 5.068 0 0 1 -7.127 0a4.972 4.972 0 0 1 0 -7.071l.524 -.463" />
+                    </svg>
+                  </a>
+                </div>`
+                  : ``
+              }
+            </section>
+      `;
+      
+      modalBody.innerHTML = modalContent;
+      modal.classList.add("modal-active");
+      document.body.style.overflow = "hidden";
+    }
+
+    // Función para cerrar modal
+    function closeModal() {
+      modal.classList.remove("modal-active");
+      document.body.style.overflow = "auto";
+    }
+
+    // Event listeners
+    const urlParams = new URLSearchParams(window.location.search);
+    const initialCategory = urlParams.get("category") || "all";
+    applyFilter(initialCategory);
+
+    filterButtons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        applyFilter(btn.dataset.category);
+      });
+    });
+
+    viewDetailsButtons.forEach((btn) => {
+      btn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const projectIndex = parseInt(btn.dataset.projectIndex);
+        openProjectModal(projectIndex);
+      });
+    });
+
+    closeBtn?.addEventListener("click", closeModal);
+    
+    modal?.addEventListener("click", (e) => {
+      if (e.target === modal) {
+        closeModal();
+      }
+    });
+
+    // Cerrar modal con tecla Escape
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && modal.classList.contains("modal-active")) {
+        closeModal();
+      }
+    });
+  });
 </script>
