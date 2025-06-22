@@ -28,16 +28,7 @@ const navItems = [
 <header
   class="fixed md:top-0 z-10 md:flex flex-col items-center justify-center w-full mx-auto md:mt-6"
 >
-  <button
-    id="menu-toggle"
-    aria-label="Abrir menú"
-    class="md:hidden absolute left-4 text-gray-600 dark:text-gray-200"
-  >
-    <MenuIcon />
-  </button>
-
   <nav
-    id="mobile-menu"
     class="fixed inset-0 hidden flex-col items-center justify-center gap-6 bg-white bg-opacity-90 backdrop-blur-md dark:bg-gray-800 dark:bg-opacity-90 md:static md:flex md:flex-row md:gap-4 md:inset-auto md:bg-transparent md:backdrop-blur-none rounded-full"
   >
     {
@@ -53,87 +44,6 @@ const navItems = [
     }
   </nav>
 </header>
-
-<script>
-  document.addEventListener("astro:page-load", () => {
-    const menuToggle = document.getElementById("menu-toggle");
-    const mobileMenu = document.getElementById("mobile-menu");
-    const links = document.querySelectorAll("#mobile-menu a");
-    const body = document.body;
-
-    const openMenu = () => {
-      mobileMenu.classList.remove("hidden");
-      mobileMenu.classList.add("flex");
-    };
-
-    const closeMenu = () => {
-      mobileMenu.classList.remove("flex");
-      mobileMenu.classList.add("hidden");
-    };
-
-    menuToggle.addEventListener("click", () => {
-      if (mobileMenu.classList.contains("hidden")) {
-        openMenu();
-      } else {
-        closeMenu();
-      }
-    });
-
-    links.forEach((link) => {
-      link.addEventListener("click", closeMenu);
-    });
-
-    document.addEventListener("click", (event) => {
-      if (
-        !mobileMenu.classList.contains("hidden") &&
-        !mobileMenu.contains(event.target) &&
-        !menuToggle.contains(event.target)
-      ) {
-        closeMenu();
-      }
-    });
-  });
-
-  document.addEventListener("astro:page-load", () => {
-    const sections = document.querySelectorAll("section");
-    const navItems = document.querySelectorAll("header nav a");
-
-    const callback = (entries: any[]) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          navItems.forEach((item) => {
-            if (item.getAttribute("aria-label") == entry.target.id) {
-              item.classList.add("text-blue-500");
-            } else {
-              item.classList.remove("text-blue-500");
-            }
-          });
-        }
-      });
-    };
-
-    const observer = new IntersectionObserver(callback, {
-      root: null,
-      rootMargin: "0px",
-      threshold: 0.3,
-    });
-
-    sections.forEach((section) => {
-      observer.observe(section);
-    });
-
-    // Cleanup function
-    document.onvisibilitychange = () => {
-      if (document.visibilityState === "hidden") {
-        observer.disconnect();
-      } else {
-        sections.forEach((section) => {
-          observer.observe(section);
-        });
-      }
-    };
-  });
-</script>
 
 <style>
   nav {
@@ -158,55 +68,6 @@ const navItems = [
     }
     .nav {
       margin-top: 20px;
-    }
-
-    #mobile-menu.flex {
-      animation: menu-slide-in 0.3s ease-out both;
-    }
-
-    #mobile-menu.hidden {
-      animation: menu-slide-out 0.3s ease-out both;
-    }
-
-    @keyframes menu-slide-in {
-      from {
-        opacity: 0;
-        transform: translateX(-100%);
-      }
-      to {
-        opacity: 1;
-        transform: translateX(0);
-      }
-    }
-
-    @keyframes menu-slide-out {
-      from {
-        opacity: 1;
-        transform: translateX(0);
-      }
-      to {
-        opacity: 0;
-        transform: translateX(-100%);
-      }
-    }
-
-    #menu-toggle {
-      top: 1rem;
-      left: 1rem;
-      background: none;
-      border: none;
-      cursor: pointer;
-    }
-
-    #close-menu {
-      position: absolute;
-      top: 1rem;
-      right: 1rem;
-      background: none;
-      border: none;
-      font-size: 1.5rem;
-      cursor: pointer;
-      z-index: 30;
     }
   }
 </style>
