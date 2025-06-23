@@ -1,6 +1,5 @@
 ---
 import { project } from "src/constants/projects";
-import LinkIcon from "src/assets/LinkIcon.svg";
 import Modal from "./Modal.astro";
 
 const url = new URL(Astro.url);
@@ -183,8 +182,8 @@ function normalizeCategory(str: string) {
 
       const newUrl =
         category === "all"
-          ? `${window.location.pathname}#proyectos`
-          : `${window.location.pathname}?category=${category}#proyectos`;
+          ? `${window.location.pathname}`
+          : `${window.location.pathname}?category=${category}`;
       window.history.replaceState({ category }, "", newUrl);
     }
 
@@ -210,7 +209,7 @@ function normalizeCategory(str: string) {
                 <h1 class="text-3xl font-bold text-gray-900 dark:text-white">
                   ${project.title}
                 </h1>
-                <p class="text-gray-700 dark:text-gray-300 text-lg leading-relaxed">
+                <p class="text-gray-700 dark:text-gray-300 text-wrap text-lg leading-relaxed">
                   ${project.description}
                 </p>
               </div>
