@@ -50,7 +50,7 @@ npm install
 npm run dev
 ```
 
-Abre [http://localhost:4321](http://localhost:4321) para ver el portafolio en desarrollo.
+Abre [https://ronal-moctz.vercel.app/] para ver el portafolio en produccion.
 
 ---
 
@@ -61,7 +61,6 @@ Abre [http://localhost:4321](http://localhost:4321) para ver el portafolio en de
 | `npm install`      | Instala dependencias                   |
 | `npm run dev`      | Inicia servidor local                  |
 | `npm run build`    | Compila el sitio para producción       |
-| `npm run preview`  | Previsualiza el sitio compilado        |
 
 ---
 
@@ -73,15 +72,9 @@ Abre [http://localhost:4321](http://localhost:4321) para ver el portafolio en de
 
 ---
 
-## 📄 Licencia
-
-Este proyecto está bajo la licencia MIT.
-
----
-
 ## 💬 Contacto
 
-¿Te gustó el portafolio? Puedes contactarme por [LinkedIn](https://www.linkedin.com/) o ver más en [GitHub](https://github.com/ronalmoctz).
+¿Te gustó el portafolio? Puedes contactarme por [LinkedIn](linkedin.com/in/ronaldo-moctezuma/) o ver más en [GitHub](https://github.com/ronalmoctz).
 
 > [!TIP]
 > Personaliza las secciones y agrega tus propios proyectos para destacar tu perfil profesional.
