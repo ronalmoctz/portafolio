@@ -25,6 +25,13 @@ import SectionContainer from "./SectionContainer.astro";
     align-items: center;
     justify-content: center;
   }
+  @media (max-width: 600px) {
+    .intro-canvas-container {
+      height: 55vh;
+      min-height: 180px;
+      margin-top: 40px;
+    }
+  }
   #textContainer canvas {
     position: absolute;
     top: 0;
@@ -57,7 +64,6 @@ import SectionContainer from "./SectionContainer.astro";
     uniform sampler2D u_texture;
     uniform vec2 u_mouse;
     uniform vec2 u_prevMouse;
-    
     void main() {
       vec2 gridUV = floor(vUv * vec2(40.0, 40.0)) / vec2(40.0, 40.0);
       vec2 centerOfPixel = gridUV + vec2(1.0/40.0, 1.0/40.0);
@@ -79,6 +85,7 @@ import SectionContainer from "./SectionContainer.astro";
       fontWeight = "100"
     ) {
       const scaleFactor = 4;
+      // Usar el tamaño actual del contenedor para el canvas
       const canvasWidth = textContainer.offsetWidth * scaleFactor;
       const canvasHeight = textContainer.offsetHeight * scaleFactor;
       const canvas = document.createElement("canvas");
@@ -88,6 +95,7 @@ import SectionContainer from "./SectionContainer.astro";
       ctx.clearRect(0, 0, canvasWidth, canvasHeight);
       ctx.fillStyle = "rgba(0,0,0,0)";
       ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+      // Escalar el texto según el tamaño del canvas
       const fontSize = size || Math.floor(canvasHeight * 0.22);
       ctx.font = `${fontWeight} ${fontSize}px "${font || "Recursive Variable"}"`;
       ctx.textAlign = "center";
@@ -140,7 +148,6 @@ import SectionContainer from "./SectionContainer.astro";
         antialias: true,
         alpha: true,
       });
-      // renderer.setClearColor(0x0b0b0b, 1);
       renderer.setSize(textContainer.offsetWidth, textContainer.offsetHeight);
       renderer.setPixelRatio(window.devicePixelRatio);
       textContainer.appendChild(renderer.domElement);
@@ -201,7 +208,12 @@ import SectionContainer from "./SectionContainer.astro";
       easeFactor = 0.02;
       targetMousePosition = { ...prevPosition };
     }
-    window.addEventListener("resize", onWindowResize, false);
+    // Debounce para resize en móviles
+    let resizeTimeout;
+    window.addEventListener("resize", () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(onWindowResize, 150);
+    }, false);
     function onWindowResize() {
       const aspectRatio =
         textContainer.offsetWidth / textContainer.offsetHeight;
