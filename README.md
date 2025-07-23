@@ -1,48 +1,87 @@
-# Astro Starter Kit: Basics
+# 🚀 Portafolio Personal - Astro + Three.js
 
-```sh
-npm create astro@latest -- --template basics
-```
+[![Astro](https://img.shields.io/badge/Astro-Framework-blue?logo=astro)](https://astro.build)
+[![Three.js](https://img.shields.io/badge/Three.js-3D%20Canvas-0b0b0b?logo=three.js)](https://threejs.org)
+[![TailwindCSS](https://img.shields.io/badge/TailwindCSS-Styling-38bdf8?logo=tailwindcss)](https://tailwindcss.com)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/basics)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/basics)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/basics/devcontainer.json)
+> [!NOTE]
+> Este proyecto es un portafolio personal desarrollado con Astro, integrando animaciones 3D con Three.js y estilos modernos con TailwindCSS. Ideal para mostrar proyectos, certificados y contacto profesional.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+---
 
-![just-the-basics](https://github.com/withastro/astro/assets/2244813/a0a5533c-a856-4198-8470-2d67b1d7c554)
+## ✨ Características
 
-## 🚀 Project Structure
+- Animación 3D interactiva en la portada usando Three.js
+- Diseño responsive y moderno con TailwindCSS
+- Carrousel de proyectos y certificados
+- Modal para detalles de cada proyecto
+- Botón para descargar CV
+- Sección de contacto y enlaces sociales
 
-Inside of your Astro project, you'll see the following folders and files:
+---
+
+## 📦 Estructura del Proyecto
 
 ```text
 /
 ├── public/
-│   └── favicon.svg
+│   ├── imágenes y CV
 ├── src/
+│   ├── assets/
+│   ├── components/
+│   ├── constants/
+│   ├── icons/
 │   ├── layouts/
-│   │   └── Layout.astro
-│   └── pages/
-│       └── index.astro
-└── package.json
+│   ├── pages/
+│   └── script/
+├── package.json
+├── astro.config.mjs
+├── tailwind.config.mjs
+└── README.md
 ```
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+---
 
-## 🧞 Commands
+## 🧑‍💻 Instalación y uso
 
-All commands are run from the root of the project, from a terminal:
+```sh
+npm install
+npm run dev
+```
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+Abre [http://localhost:4321](http://localhost:4321) para ver el portafolio en desarrollo.
 
-## 👀 Want to learn more?
+---
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+## 🛠️ Scripts útiles
+
+| Comando            | Acción                                 |
+|--------------------|----------------------------------------|
+| `npm install`      | Instala dependencias                   |
+| `npm run dev`      | Inicia servidor local                  |
+| `npm run build`    | Compila el sitio para producción       |
+| `npm run preview`  | Previsualiza el sitio compilado        |
+
+---
+
+## 📚 Tecnologías principales
+
+- [Astro](https://astro.build) - Framework principal
+- [Three.js](https://threejs.org) - Animación 3D
+- [TailwindCSS](https://tailwindcss.com) - Estilos
+
+---
+
+## 📄 Licencia
+
+Este proyecto está bajo la licencia MIT.
+
+---
+
+## 💬 Contacto
+
+¿Te gustó el portafolio? Puedes contactarme por [LinkedIn](https://www.linkedin.com/) o ver más en [GitHub](https://github.com/ronalmoctz).
+
+> [!TIP]
+> Personaliza las secciones y agrega tus propios proyectos para destacar tu perfil profesional.
