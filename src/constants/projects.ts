@@ -92,4 +92,13 @@ export const project = [
     category: ["Figma"],
     link: "https://www.figma.com/design/p8k1VAjGtDZF8x62NoUBgM/Hotel-Quinta-Rivera?node-id=0-1&t=1TXb7i1XrbtgIdKc-1",
   },
+  {
+    title: "API para una Pastelería Artesanal",
+    image: "/rest-api.webp",
+    description:
+      "Desarrollé una API RESTful profesional y escalable para la gestión integral de una pastelería, aplicando las mejores prácticas en seguridad, rendimiento y arquitectura limpia. La solución está construida con TypeScript, Node.js y Express, utilizando SQLite (Turso) como motor de base de datos. Implementa autenticación y autorización robusta con JWT, protección avanzada mediante express-rate-limit, timeouts y API Keys, así como validaciones estrictas con Zod. La arquitectura modular separa controllers, services, repositories, middlewares, schemas y routes, facilitando el mantenimiento y la escalabilidad. Incluye documentación interactiva con Swagger y Scalar API Reference, y caching local con node-cache para optimizar el rendimiento en endpoints clave. Permite la gestión completa de productos, categorías e ingredientes, con operaciones CRUD seguras y validadas. El proyecto está listo para despliegue en Vercel y es ideal como base para negocios locales que buscan digitalizar o escalar su operación, priorizando la seguridad y la eficiencia.",
+    tags: ["JWT", "TypeScript", "Sqlite(Turso)", "Express", "Node.js", "Swagger", "Scalar", "Open API", "Pino", "Eslint", "GraphQL", "Zod"],
+    category: ["Backend"],
+    link: "https://api-pasteleria.vercel.app/",
+  },
 ];
