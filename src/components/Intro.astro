@@ -47,6 +47,10 @@ import SectionContainer from "./SectionContainer.astro";
   document.addEventListener("DOMContentLoaded", () => {
     const textContainer = document.getElementById("textContainer");
     if (!textContainer || !window.THREE) return;
+    
+    // Detectar si es mobile por ancho de pantalla (estándar 425px)
+    const isMobile = () => window.innerWidth <= 428;
+    
     let easeFactor = 0.02;
     let scene, camera, renderer, planeMesh;
     let mousePosition = { x: 0.5, y: 0.5 };
@@ -84,7 +88,8 @@ import SectionContainer from "./SectionContainer.astro";
       color,
       fontWeight = "100"
     ) {
-      const scaleFactor = 4;
+      // Reducir scaleFactor en mobile para mejor rendimiento
+      const scaleFactor = isMobile() ? 2 : 4;
       // Usar el tamaño actual del contenedor para el canvas
       const canvasWidth = textContainer.offsetWidth * scaleFactor;
       const canvasHeight = textContainer.offsetHeight * scaleFactor;
@@ -95,13 +100,14 @@ import SectionContainer from "./SectionContainer.astro";
       ctx.clearRect(0, 0, canvasWidth, canvasHeight);
       ctx.fillStyle = "rgba(0,0,0,0)";
       ctx.fillRect(0, 0, canvasWidth, canvasHeight);
-      // Escalar el texto según el tamaño del canvas
-      const fontSize = size || Math.floor(canvasHeight * 0.22);
+      // Escalar el texto según el tamaño del canvas (ajustado para mobile)
+      const fontSizeRatio = isMobile() ? 0.16 : 0.22;
+      const fontSize = size || Math.floor(canvasHeight * fontSizeRatio);
       ctx.font = `${fontWeight} ${fontSize}px "${font || "Recursive Variable"}"`;
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
       ctx.imageSmoothingEnabled = true;
-      ctx.imageSmoothingQuality = "high";
+      ctx.imageSmoothingQuality = isMobile() ? "medium" : "high";
       const lineHeight = fontSize * 1.1;
       const totalHeight = lineHeight * textLines.length;
       ctx.strokeStyle = "#fff";
@@ -145,11 +151,13 @@ import SectionContainer from "./SectionContainer.astro";
       );
       scene.add(planeMesh);
       renderer = new window.THREE.WebGLRenderer({
-        antialias: true,
+        antialias: !isMobile(), // Desactivar antialiasing en mobile para rendimiento
         alpha: true,
+        powerPreference: isMobile() ? "low-power" : "high-performance",
       });
       renderer.setSize(textContainer.offsetWidth, textContainer.offsetHeight);
-      renderer.setPixelRatio(window.devicePixelRatio);
+      // Limitar pixelRatio en mobile para mejor rendimiento
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobile() ? 2 : 3));
       textContainer.appendChild(renderer.domElement);
     }
     function reloadTexture() {
@@ -186,9 +194,17 @@ import SectionContainer from "./SectionContainer.astro";
       renderer.render(scene, camera);
     }
     animateScene();
+    
+    // Event listeners para mouse (desktop)
     textContainer.addEventListener("mousemove", handleMouseMove);
     textContainer.addEventListener("mouseenter", handleMouseEnter);
     textContainer.addEventListener("mouseleave", handleMouseLeave);
+    
+    // Event listeners para touch (mobile)
+    textContainer.addEventListener("touchstart", handleTouchStart, { passive: true });
+    textContainer.addEventListener("touchmove", handleTouchMove, { passive: true });
+    textContainer.addEventListener("touchend", handleTouchEnd, { passive: true });
+    
     function handleMouseMove(event) {
       easeFactor = 0.04;
       const rect = textContainer.getBoundingClientRect();
@@ -208,12 +224,43 @@ import SectionContainer from "./SectionContainer.astro";
       easeFactor = 0.02;
       targetMousePosition = { ...prevPosition };
     }
-    // Debounce para resize en móviles
+    
+    // Handlers para touch events (mobile)
+    function handleTouchStart(event) {
+      if (event.touches.length > 0) {
+        easeFactor = 0.02;
+        const rect = textContainer.getBoundingClientRect();
+        const touch = event.touches[0];
+        mousePosition.x = targetMousePosition.x =
+          (touch.clientX - rect.left) / rect.width;
+        mousePosition.y = targetMousePosition.y =
+          (touch.clientY - rect.top) / rect.height;
+      }
+    }
+    
+    function handleTouchMove(event) {
+      if (event.touches.length > 0) {
+        easeFactor = 0.04;
+        const rect = textContainer.getBoundingClientRect();
+        const touch = event.touches[0];
+        prevPosition = { ...targetMousePosition };
+        targetMousePosition.x = (touch.clientX - rect.left) / rect.width;
+        targetMousePosition.y = (touch.clientY - rect.top) / rect.height;
+      }
+    }
+    
+    function handleTouchEnd() {
+      easeFactor = 0.02;
+      targetMousePosition = { ...prevPosition };
+    }
+    // Debounce para resize (más largo en mobile para evitar lag)
     let resizeTimeout;
+    const resizeDelay = isMobile() ? 250 : 150;
     window.addEventListener("resize", () => {
       clearTimeout(resizeTimeout);
-      resizeTimeout = setTimeout(onWindowResize, 150);
+      resizeTimeout = setTimeout(onWindowResize, resizeDelay);
     }, false);
+    
     function onWindowResize() {
       const aspectRatio =
         textContainer.offsetWidth / textContainer.offsetHeight;
@@ -223,6 +270,7 @@ import SectionContainer from "./SectionContainer.astro";
       camera.bottom = -1 / aspectRatio;
       camera.updateProjectionMatrix();
       renderer.setSize(textContainer.offsetWidth, textContainer.offsetHeight);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobile() ? 2 : 3));
       reloadTexture();
     }
   });

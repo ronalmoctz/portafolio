@@ -10,15 +10,69 @@ function normalizeCategory(str: string) {
 }
 ---
 
-<section class="pt-20 md:pt-30 mx-auto ml-8 mt-10 mb-10">
+<section class="pt-20 md:pt-30 mx-auto ml-4 md:ml-8 mt-10 mb-10 pr-4 md:pr-0">
   <h1
     class="text-4xl bg-gradient-to-bl from-sky-500 via-sky-600 to-blue-800 md:text-7xl font-bold py-8 inline-block text-transparent bg-clip-text"
   >
     Proyectos
   </h1>
 
-  <!-- Filtros -->
-  <div class="flex gap-6 mt-6 mb-8" id="category-filters">
+  <!-- Filtros - Acordeón para Mobile, Horizontal para Desktop -->
+  
+  <!-- Selector Acordeón (Mobile) -->
+  <div class="md:hidden mt-6 mb-8">
+    <button
+      id="category-dropdown-btn"
+      class="w-full flex items-center justify-between px-4 py-3 bg-neutral-800/50 backdrop-blur-sm border border-neutral-700 rounded-lg text-gray-200 hover:bg-neutral-800/70 transition-all duration-200"
+      aria-expanded="false"
+    >
+      <span class="flex items-center gap-2">
+        <svg class="w-4 h-4 text-sky-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h13M3 8h9m-9 4h6m4 0l4-4m0 0l4 4m-4-4v12"></path>
+        </svg>
+        <span id="selected-category-text">All</span>
+      </span>
+      <svg
+        id="dropdown-arrow"
+        class="w-5 h-5 transition-transform duration-200"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+      </svg>
+    </button>
+    
+    <!-- Lista desplegable -->
+    <div
+      id="category-dropdown-list"
+      class="mt-2 bg-neutral-800/90 backdrop-blur-md border border-neutral-700 rounded-lg overflow-hidden max-h-0 opacity-0 transition-all duration-300 ease-out"
+    >
+      {
+        ["all", "backend", "frontend", "figma", "redes"].map((cat, index) => {
+          const isActive = normalizeCategory(selectedCategory) === cat;
+          return (
+            <button
+              class={`filter-btn-mobile w-full text-left px-4 py-3 transition-all duration-200 flex items-center gap-3 border-b border-neutral-700/50 last:border-b-0
+                ${isActive ? "bg-sky-500/10 text-sky-400" : "text-gray-300 hover:bg-neutral-700/50 hover:text-sky-400"}`}
+              data-category={cat}
+            >
+              <div class={`w-1.5 h-1.5 rounded-full transition-all ${isActive ? "bg-sky-500 scale-100" : "bg-neutral-600 scale-75"}`}></div>
+              <span class="text-sm">{cat.charAt(0).toUpperCase() + cat.slice(1)}</span>
+              {isActive && (
+                <svg class="w-4 h-4 ml-auto text-sky-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                </svg>
+              )}
+            </button>
+          );
+        })
+      }
+    </div>
+  </div>
+
+  <!-- Filtros Horizontales (Desktop) -->
+  <div class="hidden md:flex gap-6 mt-6 mb-8" id="category-filters">
     {
       ["all", "backend", "frontend", "figma", "redes"].map((cat) => {
         const isActive = normalizeCategory(selectedCategory) === cat;
@@ -63,7 +117,7 @@ function normalizeCategory(str: string) {
               <!-- Botones de acción -->
               <div class="flex gap-2 mt-auto">
                 <button 
-                  class="view-details-btn flex-1 px-1 py-1 border border-neutral-700 dark:border-neutral-500 bg-neutral-900 text-neutral-100 text-xs md:text-sm rounded-full  shadow-sm hover:bg-neutral-800 dark:hover:bg-neutral-600 transition-colors"
+                  class="view-details-btn flex-1 px-1 py-1 border border-neutral-700 dark:border-neutral-500 bg-neutral-900 text-neutral-100 text-xs md:text-sm rounded-full shadow-sm hover:bg-neutral-800 dark:hover:bg-neutral-600 transition-all duration-200 hover:scale-105 active:scale-95"
                   data-project-index={index}
                 >
                   Ver Detalles
@@ -73,7 +127,7 @@ function normalizeCategory(str: string) {
                     href={p.link}
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="flex-1  text-center px-1 py-1 border border-neutral-700 dark:border-neutral-500 bg-neutral-900 text-neutral-100 text-xs md:text-sm rounded-full shadow-sm hover:bg-neutral-800 dark:hover:bg-neutral-600 transition-colors"
+                    class="flex-1 text-center px-1 py-1 border border-neutral-700 dark:border-neutral-500 bg-neutral-900 text-neutral-100 text-xs md:text-sm rounded-full shadow-sm hover:bg-neutral-800 dark:hover:bg-neutral-600 transition-all duration-200 hover:scale-105 active:scale-95"
                   >
                     Ver Proyecto
                   </a>
@@ -143,34 +197,87 @@ function normalizeCategory(str: string) {
       opacity: 0;
     }
   }
+
+  /* Animaciones escalonadas para elementos del modal */
+  .modal-image-container {
+    animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.15s backwards;
+  }
+
+  .modal-text-container {
+    animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.25s backwards;
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Estilos para el acordeón mobile */
+  #category-dropdown-list {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+  }
+
+  #category-dropdown-btn:active {
+    transform: scale(0.98);
+  }
+
+  .filter-btn-mobile:active {
+    transform: scale(0.97);
+  }
 </style>
 
 <script define:vars={{ projects: project }}>
   document.addEventListener("DOMContentLoaded", () => {
     const filterButtons = document.querySelectorAll(".filter-btn");
+    const filterButtonsMobile = document.querySelectorAll(".filter-btn-mobile");
     const projectCards = document.querySelectorAll(".project-card");
     const modal = document.getElementById("project-modal");
     const modalBody = document.getElementById("project-modal-body");
     const closeBtn = document.getElementById("close-project-modal");
     const viewDetailsButtons = document.querySelectorAll(".view-details-btn");
+    
+    // Elementos del acordeón mobile
+    const dropdownBtn = document.getElementById("category-dropdown-btn");
+    const dropdownList = document.getElementById("category-dropdown-list");
+    const dropdownArrow = document.getElementById("dropdown-arrow");
+    const selectedCategoryText = document.getElementById("selected-category-text");
 
-    // Función para aplicar filtros - CORREGIDA
+    // Función para aplicar filtros - Actualizada para mobile y desktop
     function applyFilter(category) {
+      // Actualizar botones desktop
       filterButtons.forEach((btn) => {
-        // Remover todas las clases de estado activo
         btn.classList.remove("text-sky-500", "bg-sky-500/10");
         btn.classList.add("text-gray-200");
-
-        // Aplicar clases al botón activo
         if (btn.dataset.category === category) {
           btn.classList.remove("text-gray-200");
           btn.classList.add("text-sky-500", "bg-sky-500/10");
         }
       });
 
+      // Actualizar botones mobile
+      filterButtonsMobile.forEach((btn) => {
+        btn.classList.remove("bg-sky-500/10", "text-sky-400");
+        btn.classList.add("text-gray-300");
+        if (btn.dataset.category === category) {
+          btn.classList.remove("text-gray-300");
+          btn.classList.add("bg-sky-500/10", "text-sky-400");
+        }
+      });
+
+      // Actualizar texto del selector mobile
+      if (selectedCategoryText) {
+        selectedCategoryText.textContent = category.charAt(0).toUpperCase() + category.slice(1);
+      }
+
+      // Filtrar proyectos
       projectCards.forEach((card) => {
         const cardCategories = card.dataset.categories.split(",");
-
         if (category === "all" || cardCategories.includes(category)) {
           card.classList.remove("hidden", "opacity-0", "-translate-y-4");
           card.classList.add("block", "opacity-100", "translate-y-0");
@@ -180,12 +287,54 @@ function normalizeCategory(str: string) {
         }
       });
 
-      const newUrl =
-        category === "all"
-          ? `${window.location.pathname}`
-          : `${window.location.pathname}?category=${category}`;
+      // Actualizar URL
+      const newUrl = category === "all"
+        ? `${window.location.pathname}`
+        : `${window.location.pathname}?category=${category}`;
       window.history.replaceState({ category }, "", newUrl);
     }
+
+    // Función para toggle del acordeón mobile
+    function toggleDropdown() {
+      const isExpanded = dropdownBtn.getAttribute("aria-expanded") === "true";
+      
+      if (isExpanded) {
+        // Cerrar
+        dropdownList.style.maxHeight = "0";
+        dropdownList.style.opacity = "0";
+        dropdownBtn.setAttribute("aria-expanded", "false");
+        dropdownArrow.style.transform = "rotate(0deg)";
+      } else {
+        // Abrir
+        dropdownList.style.maxHeight = dropdownList.scrollHeight + "px";
+        dropdownList.style.opacity = "1";
+        dropdownBtn.setAttribute("aria-expanded", "true");
+        dropdownArrow.style.transform = "rotate(180deg)";
+      }
+    }
+
+    // Event listener para el botón del acordeón
+    if (dropdownBtn) {
+      dropdownBtn.addEventListener("click", toggleDropdown);
+    }
+
+    // Event listeners para botones mobile
+    filterButtonsMobile.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        applyFilter(btn.dataset.category);
+        toggleDropdown(); // Cerrar acordeón después de seleccionar
+      });
+    });
+
+    // Cerrar dropdown al hacer clic fuera
+    document.addEventListener("click", (e) => {
+      if (dropdownBtn && dropdownList) {
+        const isExpanded = dropdownBtn.getAttribute("aria-expanded") === "true";
+        if (isExpanded && !dropdownBtn.contains(e.target) && !dropdownList.contains(e.target)) {
+          toggleDropdown();
+        }
+      }
+    });
 
     // Función para abrir modal con detalles del proyecto
     function openProjectModal(projectIndex) {
@@ -194,7 +343,7 @@ function normalizeCategory(str: string) {
       const modalContent = `
             <section class="flex flex-col gap-y-8 px-6 py-4 md:px-10">
               <!-- Imagen con aspect-ratio para prevenir saltos -->
-              <div class="text-center">
+              <div class="text-center modal-image-container">
                 <div class="w-full max-w-2xl mx-auto aspect-w-16 aspect-h-9">
                   <img
                     src="${project.image}"
@@ -205,7 +354,7 @@ function normalizeCategory(str: string) {
               </div>
 
               <!-- Título y descripción -->
-              <div class="flex flex-col gap-y-4 text-center md:text-left">
+              <div class="flex flex-col gap-y-4 text-center md:text-left modal-text-container">
                 <h1 class="text-3xl font-bold text-gray-900 dark:text-white">
                   ${project.title}
                 </h1>
@@ -274,14 +423,25 @@ function normalizeCategory(str: string) {
       `;
       
       modalBody.innerHTML = modalContent;
-      modal.classList.add("modal-active");
-      document.body.style.overflow = "hidden";
+      
+      // Pequeño delay para que el navegador renderice el contenido antes de animar
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          modal.classList.add("modal-active");
+          document.body.style.overflow = "hidden";
+        });
+      });
     }
 
-    // Función para cerrar modal
+    // Función para cerrar modal con transición suave
     function closeModal() {
+      // Remover la clase activa para iniciar la animación de cierre
       modal.classList.remove("modal-active");
-      document.body.style.overflow = "auto";
+      
+      // Esperar a que termine la animación antes de ocultar completamente
+      setTimeout(() => {
+        document.body.style.overflow = "auto";
+      }, 300); // Duración de la animación de cierre
     }
 
     // Event listeners

@@ -4,10 +4,10 @@ const { id = "modal", maxWidth = "max-w-3xl" } = Astro.props;
 
 <section
   id={id}
-  class="modal fixed inset-0 z-50 bg-black/70 backdrop-blur-md flex items-center justify-center opacity-0 pointer-events-none transition-all duration-300 p-4"
+  class="modal fixed inset-0 z-50 bg-black/70 backdrop-blur-md flex items-center justify-center opacity-0 pointer-events-none transition-all duration-500 ease-out p-4"
 >
   <div
-    class={`modal-content relative bg-white dark:bg-neutral-900 rounded-xl shadow-xl ${maxWidth} w-full max-h-[90vh] overflow-hidden transform scale-95 transition-transform duration-300`}
+    class={`modal-content relative bg-white dark:bg-neutral-900 rounded-xl shadow-2xl ${maxWidth} w-full max-h-[90vh] overflow-hidden transform translate-y-8 opacity-0 transition-all duration-500 ease-out`}
   >
     <!-- Header con botón de cerrar -->
     <header
@@ -42,25 +42,86 @@ const { id = "modal", maxWidth = "max-w-3xl" } = Astro.props;
 </section>
 
 <style>
+  .modal {
+    animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
   .modal-active {
     opacity: 1 !important;
     pointer-events: auto !important;
   }
 
   .modal-active .modal-content {
-    transform: scale(1) !important;
+    transform: translateY(0) !important;
+    opacity: 1 !important;
   }
 
+  /* Animación suave de entrada para el backdrop */
   .modal-active {
-    animation: modalFadeIn 0.3s ease-out;
+    animation: backdropFadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
-  @keyframes modalFadeIn {
+  /* Animación suave de entrada para el contenido */
+  .modal-active .modal-content {
+    animation: slideUpFadeIn 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  @keyframes backdropFadeIn {
     from {
       opacity: 0;
+      backdrop-filter: blur(0px);
     }
     to {
       opacity: 1;
+      backdrop-filter: blur(8px);
+    }
+  }
+
+  @keyframes slideUpFadeIn {
+    0% {
+      opacity: 0;
+      transform: translateY(32px) scale(0.96);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  /* Animación de cierre suave */
+  .modal:not(.modal-active) .modal-content {
+    animation: slideDownFadeOut 0.3s cubic-bezier(0.4, 0, 1, 1);
+  }
+
+  @keyframes slideDownFadeOut {
+    from {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+    to {
+      opacity: 0;
+      transform: translateY(16px) scale(0.98);
+    }
+  }
+
+  /* Scroll suave en el contenido */
+  .modal-content {
+    scroll-behavior: smooth;
+  }
+
+  /* Animación de entrada para elementos internos */
+  .modal-active [id$="-body"] > * {
+    animation: contentFadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.1s backwards;
+  }
+
+  @keyframes contentFadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
     }
   }
 </style>
