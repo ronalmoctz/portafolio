@@ -2,6 +2,24 @@
 
 export const project = [
   {
+    title: "Houses Sale Landing",
+    image: "/house_project.png",
+    description:
+      "Landing page construida con Astro y Tailwind para exhibir inmuebles, enfocada en animaciones fluidas con GSAP y buenas prácticas de performance. Aprendí a componer timelines complejos y coordinar animaciones por secciones, optimizar imágenes (build estático), y aplicar un enfoque mobile-first real. También reforcé accesibilidad básica, estructura semántica y microinteracciones sin bloquear el hilo principal.",
+    tags: ["Astro", "Tailwind", "GSAP", "Sharp"],
+    category: ["Frontend"],
+    link: "https://house-landing-page-cyan.vercel.app/",
+  },
+  {
+    title: "Java Practice Repo",
+    image: "/java_pract.png",
+    description:
+      "Repositorio de prácticas en Java para afianzar fundamentos y patrones del lenguaje. Reforcé POO (clases, herencia, polimorfismo, encapsulamiento), manejo de excepciones, colecciones (List, Set, Map), enumeraciones y programación funcional con lambdas y Streams. El enfoque fue escribir ejemplos claros y reutilizables para consolidar conceptos base y flujos idiomáticos de Java.",
+    tags: ["Java", "POO", "Excepciones", "Streams", "Lambdas", "Collections"],
+    category: ["Backend"],
+    link: "https://github.com/ronalmoctz/java-pract",
+  },
+  {
     title: "UPFIM SICD",
     image: "/upfim-web.png",
     description:

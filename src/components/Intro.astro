@@ -16,7 +16,7 @@ import SectionContainer from "./SectionContainer.astro";
   .intro-canvas-container {
     position: relative;
     width: 100%;
-    height: 80vh;
+    height: 70vh;
     margin-top: 100px;
     min-height: 320px;
     max-width: 100vw;
@@ -47,10 +47,10 @@ import SectionContainer from "./SectionContainer.astro";
   document.addEventListener("DOMContentLoaded", () => {
     const textContainer = document.getElementById("textContainer");
     if (!textContainer || !window.THREE) return;
-    
+
     // Detectar si es mobile por ancho de pantalla (estándar 425px)
     const isMobile = () => window.innerWidth <= 428;
-    
+
     let easeFactor = 0.02;
     let scene, camera, renderer, planeMesh;
     let mousePosition = { x: 0.5, y: 0.5 };
@@ -100,16 +100,35 @@ import SectionContainer from "./SectionContainer.astro";
       ctx.clearRect(0, 0, canvasWidth, canvasHeight);
       ctx.fillStyle = "rgba(0,0,0,0)";
       ctx.fillRect(0, 0, canvasWidth, canvasHeight);
-      // Escalar el texto según el tamaño del canvas (ajustado para mobile)
-      const fontSizeRatio = isMobile() ? 0.16 : 0.22;
-      const fontSize = size || Math.floor(canvasHeight * fontSizeRatio);
+      // Calcular tamaño base y ajustar para que quepa en ancho y alto (mejor en mobile)
+      const fontSizeRatio = isMobile() ? 0.18 : 0.22;
+      let fontSize = size || Math.floor(canvasHeight * fontSizeRatio);
       ctx.font = `${fontWeight} ${fontSize}px "${font || "Recursive Variable"}"`;
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
       ctx.imageSmoothingEnabled = true;
       ctx.imageSmoothingQuality = isMobile() ? "medium" : "high";
-      const lineHeight = fontSize * 1.1;
-      const totalHeight = lineHeight * textLines.length;
+
+      // 1) Ajustar para no exceder el ancho disponible
+      const desiredMaxWidth = canvasWidth * 0.9;
+      const getMaxMeasuredWidth = () =>
+        Math.max(...textLines.map((line) => ctx.measureText(line).width || 0));
+      while (getMaxMeasuredWidth() > desiredMaxWidth && fontSize > 10) {
+        fontSize -= 2;
+        ctx.font = `${fontWeight} ${fontSize}px "${font || "Recursive Variable"}"`;
+      }
+
+      // 2) Ajustar altura total a lo disponible
+      let lineHeight = fontSize * (isMobile() ? 1.06 : 1.12);
+      let totalHeight = lineHeight * textLines.length;
+      const maxTotalHeight = canvasHeight * 0.9;
+      if (totalHeight > maxTotalHeight) {
+        const scale = maxTotalHeight / totalHeight;
+        fontSize = Math.max(10, Math.floor(fontSize * scale));
+        ctx.font = `${fontWeight} ${fontSize}px "${font || "Recursive Variable"}"`;
+        lineHeight = fontSize * (isMobile() ? 1.06 : 1.12);
+        totalHeight = lineHeight * textLines.length;
+      }
       ctx.strokeStyle = "#fff";
       ctx.lineWidth = fontSize * 0.01;
       textLines.forEach((line, i) => {
@@ -157,7 +176,9 @@ import SectionContainer from "./SectionContainer.astro";
       });
       renderer.setSize(textContainer.offsetWidth, textContainer.offsetHeight);
       // Limitar pixelRatio en mobile para mejor rendimiento
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobile() ? 2 : 3));
+      renderer.setPixelRatio(
+        Math.min(window.devicePixelRatio, isMobile() ? 2 : 3)
+      );
       textContainer.appendChild(renderer.domElement);
     }
     function reloadTexture() {
@@ -194,17 +215,23 @@ import SectionContainer from "./SectionContainer.astro";
       renderer.render(scene, camera);
     }
     animateScene();
-    
+
     // Event listeners para mouse (desktop)
     textContainer.addEventListener("mousemove", handleMouseMove);
     textContainer.addEventListener("mouseenter", handleMouseEnter);
     textContainer.addEventListener("mouseleave", handleMouseLeave);
-    
+
     // Event listeners para touch (mobile)
-    textContainer.addEventListener("touchstart", handleTouchStart, { passive: true });
-    textContainer.addEventListener("touchmove", handleTouchMove, { passive: true });
-    textContainer.addEventListener("touchend", handleTouchEnd, { passive: true });
-    
+    textContainer.addEventListener("touchstart", handleTouchStart, {
+      passive: true,
+    });
+    textContainer.addEventListener("touchmove", handleTouchMove, {
+      passive: true,
+    });
+    textContainer.addEventListener("touchend", handleTouchEnd, {
+      passive: true,
+    });
+
     function handleMouseMove(event) {
       easeFactor = 0.04;
       const rect = textContainer.getBoundingClientRect();
@@ -224,7 +251,7 @@ import SectionContainer from "./SectionContainer.astro";
       easeFactor = 0.02;
       targetMousePosition = { ...prevPosition };
     }
-    
+
     // Handlers para touch events (mobile)
     function handleTouchStart(event) {
       if (event.touches.length > 0) {
@@ -237,7 +264,7 @@ import SectionContainer from "./SectionContainer.astro";
           (touch.clientY - rect.top) / rect.height;
       }
     }
-    
+
     function handleTouchMove(event) {
       if (event.touches.length > 0) {
         easeFactor = 0.04;
@@ -248,7 +275,7 @@ import SectionContainer from "./SectionContainer.astro";
         targetMousePosition.y = (touch.clientY - rect.top) / rect.height;
       }
     }
-    
+
     function handleTouchEnd() {
       easeFactor = 0.02;
       targetMousePosition = { ...prevPosition };
@@ -256,11 +283,15 @@ import SectionContainer from "./SectionContainer.astro";
     // Debounce para resize (más largo en mobile para evitar lag)
     let resizeTimeout;
     const resizeDelay = isMobile() ? 250 : 150;
-    window.addEventListener("resize", () => {
-      clearTimeout(resizeTimeout);
-      resizeTimeout = setTimeout(onWindowResize, resizeDelay);
-    }, false);
-    
+    window.addEventListener(
+      "resize",
+      () => {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(onWindowResize, resizeDelay);
+      },
+      false
+    );
+
     function onWindowResize() {
       const aspectRatio =
         textContainer.offsetWidth / textContainer.offsetHeight;
@@ -270,7 +301,9 @@ import SectionContainer from "./SectionContainer.astro";
       camera.bottom = -1 / aspectRatio;
       camera.updateProjectionMatrix();
       renderer.setSize(textContainer.offsetWidth, textContainer.offsetHeight);
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobile() ? 2 : 3));
+      renderer.setPixelRatio(
+        Math.min(window.devicePixelRatio, isMobile() ? 2 : 3)
+      );
       reloadTexture();
     }
   });
